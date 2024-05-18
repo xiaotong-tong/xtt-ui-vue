@@ -13,13 +13,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import rough from "roughjs/bundled/rough.esm.js";
+import rough from "roughjs";
 
 interface Props {
 	is?: string;
 	height?: number | string;
 	color?: string;
-	strokeWidth?: number | string;
+	strokeWidth?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const line = ref<HTMLElement | null>(null);
-const svg = ref<SVGElement | null>(null);
+const svg = ref<SVGSVGElement | null>(null);
 
 const path = ref<string>("");
 
