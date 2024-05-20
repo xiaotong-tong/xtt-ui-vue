@@ -12,21 +12,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import type { Options } from "roughjs/bundled/core.d.ts";
+import { ref, onMounted, watch } from "vue";
 import rough from "roughjs";
+import { useResizeObserver } from "@vueuse/core";
+import { random } from "xtt-utils";
 
 interface Props {
 	is?: string;
 	height?: number | string;
 	color?: string;
-	strokeWidth?: number;
+	roughOptions?: Options;
 }
+
+const defaultRoughOptions = {
+	fillWeight: 3,
+	stroke: "none",
+	hachureAngle: random(125, 235)
+};
 
 const props = withDefaults(defineProps<Props>(), {
 	is: "div",
-	height: 2,
-	color: "#000000",
-	strokeWidth: 2
+	height: 3,
+	color: "#000000"
 });
 
 const line = ref<HTMLElement | null>(null);
@@ -34,18 +42,34 @@ const svg = ref<SVGSVGElement | null>(null);
 
 const path = ref<string>("");
 
-onMounted(() => {
+const changeSvgFn = () => {
 	if (line.value && svg.value) {
 		const ract = line.value.getBoundingClientRect();
 
 		svg.value.setAttribute("viewBox", `0 0 ${ract.width} ${ract.height}`);
 
 		path.value = rough.svg(svg.value).rectangle(0, 0, ract.width, ract.height, {
-			stroke: props.color,
-			strokeWidth: props.strokeWidth
+			...defaultRoughOptions,
+			...props.roughOptions,
+			fill: props.roughOptions?.fill ?? props.color
 		}).outerHTML;
 	}
+};
+
+onMounted(() => {
+	changeSvgFn();
 });
+
+useResizeObserver(line, () => {
+	changeSvgFn();
+});
+
+watch(
+	() => props.color,
+	() => {
+		changeSvgFn();
+	}
+);
 </script>
 
 <style>

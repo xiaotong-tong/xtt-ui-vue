@@ -17,6 +17,7 @@ import type { Options } from "roughjs/bundled/core.d.ts";
 import { ref, onMounted, watch } from "vue";
 import rough from "roughjs";
 import { useCssVar, useResizeObserver } from "@vueuse/core";
+import { random } from "xtt-utils";
 
 interface Props {
 	is?: string;
@@ -27,17 +28,16 @@ interface Props {
 	roughOptions?: Options;
 }
 
+const defaultRoughOptions = {
+	bowing: 2,
+	roughness: 0.8,
+	hachureAngle: random(125, 235)
+};
+
 const props = withDefaults(defineProps<Props>(), {
 	is: "div",
 	color: "#000000",
 	height: "",
-	roughOptions() {
-		return {
-			strokeWidth: 2,
-			bowing: 2,
-			roughness: 0.8
-		};
-	},
 	padding: 5
 });
 
@@ -57,6 +57,13 @@ watch(
 	}
 );
 
+watch(
+	() => props.color,
+	() => {
+		changeSvgFn();
+	}
+);
+
 function changeSvgFn() {
 	if (card.value && svg.value) {
 		const ract = card.value.getBoundingClientRect();
@@ -66,8 +73,9 @@ function changeSvgFn() {
 		const p = props.padding;
 
 		path.value = rough.svg(svg.value).rectangle(p, p, ract.width - p * 2, ract.height - p * 2, {
+			...defaultRoughOptions,
 			...props.roughOptions,
-			stroke: props.roughOptions.stroke ?? props.color
+			stroke: props.roughOptions?.stroke ?? props.color
 		}).outerHTML;
 	}
 }
