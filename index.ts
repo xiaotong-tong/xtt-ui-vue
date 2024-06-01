@@ -9,7 +9,7 @@ const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
 	app.component("namiRoughCard", roughCard);
 	app.component("namiRoughIcon", roughIcon);
-	app.component("namiIcon", icon);
+	app.component("namiCIcon", icon);
 	app.component("namiWebBG", webBG);
 };
 
