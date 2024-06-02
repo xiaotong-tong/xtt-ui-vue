@@ -9,14 +9,18 @@
 		<template v-if="props.icon === 'cat'">
 			<myCatIcon class="svg" />
 		</template>
+		<template v-else-if="props.icon === 'heart'">
+			<myHeartIcon class="svg" />
+		</template>
 	</i>
 </template>
 
 <script setup lang="ts">
 import myCatIcon from "./icons/cat.vue";
+import myHeartIcon from "./icons/heart.vue";
 
 interface Props {
-	icon: "cat";
+	icon: "cat" | "heart";
 	size?: number | string;
 }
 
