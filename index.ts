@@ -6,6 +6,7 @@ import webBG from "./components/web-bg/index.vue";
 import icon from "./components/icon/index.vue";
 import listMasonry from "./components/list/masonry/masonry.vue";
 import listMasonryItem from "./components/list/masonry/masonryItem.vue";
+import hBanner from "./components/hBanner/hBanner.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -15,6 +16,7 @@ const withInstall = (app: App) => {
 	app.component("namiWebBG", webBG);
 	app.component("namiListMasonry", listMasonry);
 	app.component("namiListMasonryItem", listMasonryItem);
+	app.component("namiHBanner", hBanner);
 };
 
 export {
@@ -25,6 +27,7 @@ export {
 	webBG,
 	listMasonry,
 	listMasonryItem,
+	hBanner,
 	withInstall,
 	withInstall as default
 };
