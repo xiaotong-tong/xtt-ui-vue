@@ -42,7 +42,6 @@ onMounted(() => {
 		let defaultColor;
 		if (!props.color) {
 			defaultColor = css(svg.value as unknown as HTMLElement, "color");
-			console.log(defaultColor);
 		}
 
 		const el = rough.svg(svg.value).path(reflectIcon(props.icon), {
