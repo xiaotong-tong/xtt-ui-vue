@@ -8,6 +8,7 @@ import listMasonry from "./components/list/masonry/masonry.vue";
 import listMasonryItem from "./components/list/masonry/masonryItem.vue";
 import hBanner from "./components/hBanner/hBanner.vue";
 // import live2d from "./components/live2d/index.vue";
+import markdown from "./components/markdown/markdown.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -19,6 +20,7 @@ const withInstall = (app: App) => {
 	app.component("namiListMasonryItem", listMasonryItem);
 	app.component("namiHBanner", hBanner);
 	// app.component("namiLive2d", live2d);
+	app.component("namiMarkdown", markdown);
 };
 
 export {
@@ -31,6 +33,7 @@ export {
 	listMasonryItem,
 	hBanner,
 	// live2d,
+	markdown,
 	withInstall,
 	withInstall as default
 };
