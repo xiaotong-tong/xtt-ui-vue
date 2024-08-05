@@ -9,6 +9,7 @@ import listMasonryItem from "./components/list/masonry/masonryItem.vue";
 import hBanner from "./components/hBanner/hBanner.vue";
 // import live2d from "./components/live2d/index.vue";
 import markdown from "./components/markdown/markdown.vue";
+import qrCode from "./components/qrcode/qrcode.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -21,6 +22,7 @@ const withInstall = (app: App) => {
 	app.component("namiHBanner", hBanner);
 	// app.component("namiLive2d", live2d);
 	app.component("namiMarkdown", markdown);
+	app.component("namiQrCode", qrCode);
 };
 
 export {
@@ -34,6 +36,7 @@ export {
 	hBanner,
 	// live2d,
 	markdown,
+	qrCode,
 	withInstall,
 	withInstall as default
 };
