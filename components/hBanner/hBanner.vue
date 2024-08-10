@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 	position: relative;
 	margin-block: 4px;
 	block-size: 48px;
+	width: 258px;
 }
 
 .bg {

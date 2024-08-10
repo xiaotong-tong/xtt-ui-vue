@@ -9,7 +9,7 @@
 			y="0"
 			width="534.9432989311831"
 			height="100.22379428661327"
-			fill="#ffffff"
+			fill="transparent"
 		></rect>
 		<g stroke-linecap="round">
 			<g
