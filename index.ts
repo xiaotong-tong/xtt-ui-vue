@@ -10,6 +10,7 @@ import hBanner from "./components/hBanner/hBanner.vue";
 // import live2d from "./components/live2d/index.vue";
 import markdown from "./components/markdown/markdown.vue";
 import qrCode from "./components/qrcode/qrcode.vue";
+import lineButton from "./components/button/lineButton.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -23,6 +24,7 @@ const withInstall = (app: App) => {
 	// app.component("namiLive2d", live2d);
 	app.component("namiMarkdown", markdown);
 	app.component("namiQrCode", qrCode);
+	app.component("namiLineButton", lineButton);
 };
 
 export {
@@ -37,6 +39,7 @@ export {
 	// live2d,
 	markdown,
 	qrCode,
+	lineButton as NamiLineButton,
 	withInstall,
 	withInstall as default
 };
