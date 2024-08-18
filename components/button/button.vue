@@ -8,8 +8,8 @@
 		@mouseenter="handleMouseEnter"
 		@mouseleave="handleMouseLeave"
 	>
-		<svg aria-hidden="true" ref="borderSvgRef" class="border-svg" mask="url(#nami-border-mask)">
-			<mask id="nami-border-mask">
+		<svg aria-hidden="true" ref="borderSvgRef" class="border-svg" :mask="`url(#${maskId})`">
+			<mask :id="maskId">
 				<rect x="0" y="0" :width="width" :height="height" fill="white" />
 				<rect
 					ref="maskRectRef"
@@ -32,6 +32,7 @@ import rough from "roughjs";
 import { useElementBounding } from "@vueuse/core";
 import { gsap } from "gsap";
 import { random } from "xtt-utils";
+import { uniqueNumber } from "../../utils/unique";
 
 interface Props {
 	borderColor?: MaybeRef<string>;
@@ -40,10 +41,11 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	borderColor: "#e0e0e6",
-	activeBorderColor: "#8bcecb",
+	borderColor: "#8bcecb",
 	borderWidth: 2
 });
+
+const maskId = "nami-id-" + uniqueNumber();
 
 const button = ref<HTMLButtonElement>();
 const borderSvgRef = ref<SVGSVGElement>();
@@ -125,7 +127,7 @@ const tl = gsap.timeline({
 	}
 }); // 鼠标移入移出时的动画
 
-onMounted(() => {
+const setTimelineAnime = () => {
 	tl.to(maskRectRef.value!, {
 		x: width.value / 2,
 		y: height.value / 2,
@@ -133,24 +135,35 @@ onMounted(() => {
 		height: 0
 	});
 
-	tl.to(
-		button.value!,
-		{
-			"--stroke": unref(props.activeBorderColor)
-		},
-		">-0.5"
-	);
+	if (props.activeBorderColor) {
+		tl.to(
+			button.value!,
+			{
+				"--stroke": unref(props.activeBorderColor)
+			},
+			">-0.5"
+		);
+	}
+
 	tl.pause();
+};
+
+onMounted(() => {
+	setTimelineAnime();
 });
 
 function handleMouseEnter() {
 	if (maskRectRef.value) {
+		tl._first.vars.x = width.value / 2;
+		tl._first.vars.y = height.value / 2;
 		tl.play();
 	}
 }
 
 function handleMouseLeave() {
 	if (maskRectRef.value) {
+		tl._first.vars.x = width.value / 2;
+		tl._first.vars.y = height.value / 2;
 		tl.reverse();
 	}
 }
