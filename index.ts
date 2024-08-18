@@ -11,6 +11,7 @@ import hBanner from "./components/hBanner/hBanner.vue";
 import markdown from "./components/markdown/markdown.vue";
 import qrCode from "./components/qrcode/qrcode.vue";
 import lineButton from "./components/button/lineButton.vue";
+import Button from "./components/button/button.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -40,6 +41,7 @@ export {
 	markdown,
 	qrCode,
 	lineButton as NamiLineButton,
+	Button as NamiButton,
 	withInstall,
 	withInstall as default
 };

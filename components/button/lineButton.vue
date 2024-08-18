@@ -89,7 +89,7 @@ function changeSvgFn() {
 			{ strokeDashoffset: pathLength.value },
 			{
 				strokeDashoffset: 0,
-				duration: 5,
+				duration: 3,
 				ease: "power1.inOut",
 				onComplete: () => {
 					if (!mouseInEl.value) {
