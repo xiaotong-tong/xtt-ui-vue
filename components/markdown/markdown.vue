@@ -95,32 +95,50 @@ const markdownHtml = ref("");
 const markdownBodyRef = ref<HTMLElement>();
 
 function openAnime() {
-	if (!markdownBodyRef.value) {
+	// 如果还没有内容，提前返回
+	if (!markdownBodyRef.value || !markdownHtml.value) {
 		return;
 	}
 
+	const ract = markdownBodyRef.value.getBoundingClientRect();
+
 	const tl = gsap.timeline();
 
-	tl.fromTo(
-		markdownBodyRef.value,
-		{
-			height: 0,
-			overflow: "hidden"
-		},
-		{
-			height: visualViewport?.height,
-			duration: 1
-		}
-	);
+	// 如果内容高度大于视口高度，先将可见区域范围内做个动画，再对整个内容做动画，防止高度过高，感受不到动画效果
+	if (ract.height > (visualViewport?.height || window.innerHeight)) {
+		tl.fromTo(
+			markdownBodyRef.value,
+			{
+				height: 0,
+				overflow: "hidden"
+			},
+			{
+				height: visualViewport?.height,
+				duration: 1
+			}
+		);
 
-	tl.to(
-		markdownBodyRef.value,
-		{
-			height: "auto",
-			duration: 0.5
-		},
-		"+=0"
-	);
+		tl.to(
+			markdownBodyRef.value,
+			{
+				height: "auto",
+				duration: 0.5
+			},
+			"+=0"
+		);
+	} else {
+		tl.fromTo(
+			markdownBodyRef.value,
+			{
+				height: 0,
+				overflow: "hidden"
+			},
+			{
+				height: "auto",
+				duration: 1
+			}
+		);
+	}
 
 	tl.to(
 		markdownBodyRef.value,
