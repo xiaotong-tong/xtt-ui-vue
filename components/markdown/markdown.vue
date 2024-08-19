@@ -10,10 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import "highlight.js/styles/github.css";
-import "highlight.js/styles/github-dark.css";
-import "github-markdown-css";
-
 import type { MaybeRef } from "vue";
 import { ref, watch, unref, onMounted, nextTick } from "vue";
 import { gsap } from "gsap";
@@ -77,7 +73,7 @@ marked.use(
 	}),
 
 	gfmHeadingId({
-		prefix: "xtt-md-"
+		prefix: "nami-md-"
 	})
 );
 
@@ -169,7 +165,22 @@ onMounted(() => {
 });
 </script>
 
+<style>
+@import "github-markdown-css";
+</style>
+
 <style scoped>
+@layer components.markdown {
+	.markdown-body ::v-deep(.code-line::before) {
+		content: attr(data-line-num);
+		display: inline-block;
+		width: 2em;
+		padding-right: 1em;
+		text-align: right;
+		color: var(--color-fg-muted);
+	}
+}
+
 .markdown-body {
 	--bgColor-default: transparent;
 	--md-color-canvas-default: transparent;
@@ -179,10 +190,14 @@ onMounted(() => {
 
 	max-width: 100%;
 	overflow-x: auto;
+	padding-block-start: 24px;
 }
 .theme-dark .markdown-body {
 	--md-color-border-default: #30363d;
-	--md-pre-bg-color: #161b2280;
+	--md-pre-bg-color: #1b2426;
+	--fgColor-default: #cfd3dc;
+
+	color: #cfd3dc;
 }
 
 .markdown-body ::v-deep(pre) {
@@ -192,15 +207,7 @@ onMounted(() => {
 
 .markdown-body ::v-deep(pre code) {
 	padding-inline-start: 0;
-}
-
-.markdown-body ::v-deep(.code-line::before) {
-	content: attr(data-line-num);
-	display: inline-block;
-	width: 2em;
-	padding-right: 1em;
-	text-align: right;
-	color: var(--color-fg-muted);
+	/* color: var(--d-color, #24292e); */
 }
 
 .markdown-body.text-line ::v-deep(p) {
