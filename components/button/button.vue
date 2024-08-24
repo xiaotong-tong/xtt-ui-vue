@@ -18,6 +18,9 @@
 					:width="maskPointsInfo.width"
 					:height="maskPointsInfo.height"
 					fill="black"
+					:style="{
+						transform: 'none'
+					}"
 				/>
 			</mask>
 		</svg>
@@ -30,7 +33,7 @@
 
 <script setup lang="ts">
 import type { MaybeRef } from "vue";
-import { ref, unref, watch, onMounted } from "vue";
+import { ref, unref, watch } from "vue";
 import rough from "roughjs";
 import { useElementBounding } from "@vueuse/core";
 import { gsap } from "gsap";
@@ -67,8 +70,10 @@ const maskPointsInfo = ref<{ x: number; y: number; width: number; height: number
 	height: height.value ? height.value - 2 * unref(props.borderWidth) : 0
 });
 
+const maskRectRef = ref<SVGRectElement>();
+
 function sizeChangeFn() {
-	if (borderSvgRef.value) {
+	if (borderSvgRef.value && maskRectRef.value) {
 		const w = width.value;
 		const h = height.value;
 
@@ -125,51 +130,62 @@ watch(
 	}
 );
 
-const maskRectRef = ref<SVGRectElement>();
-const tl = gsap.timeline({
-	duration: 0.5,
-	yoyo: true,
-	ease: "power1.inOut"
-}); // 鼠标移入移出时的动画
-
-const setTimelineAnime = () => {
-	tl.to(maskRectRef.value!, {
-		x: width.value / 2,
-		y: height.value / 2,
-		width: 0,
-		height: 0
-	});
-
-	if (props.activeBorderColor) {
-		tl.to(
-			button.value!,
-			{
-				"--stroke": unref(props.activeBorderColor)
-			},
-			">-0.5"
-		);
-	}
-
-	tl.pause();
-};
-
-onMounted(() => {
-	setTimelineAnime();
-});
-
 function handleMouseEnter() {
 	if (maskRectRef.value) {
-		tl._first.vars.x = width.value / 2;
-		tl._first.vars.y = height.value / 2;
-		tl.play();
+		gsap.to(maskRectRef.value, {
+			x: width.value / 2,
+			y: height.value / 2,
+			width: 0,
+			height: 0,
+			duration: 0.5,
+			yoyo: true,
+			ease: "power1.inOut",
+			onUpdate() {
+				const currentX = gsap.getProperty(maskRectRef.value!, "x");
+				const currentY = gsap.getProperty(maskRectRef.value!, "y");
+				maskRectRef.value!.style.x = `${currentX}px`;
+				maskRectRef.value!.style.y = `${currentY}px`;
+			}
+		});
+
+		if (props.activeBorderColor) {
+			gsap.to(button.value!, {
+				"--stroke": unref(props.activeBorderColor),
+				duration: 0.2
+			});
+		}
 	}
 }
 
 function handleMouseLeave() {
 	if (maskRectRef.value) {
-		tl._first.vars.x = width.value / 2;
-		tl._first.vars.y = height.value / 2;
-		tl.reverse();
+		if (props.activeBorderColor) {
+			gsap.to(button.value!, {
+				"--stroke": unref(props.borderColor),
+				duration: 0.2
+			});
+		}
+
+		gsap.to(maskRectRef.value, {
+			x: unref(props.borderWidth),
+			y: unref(props.borderWidth),
+			width: width.value - 2 * unref(props.borderWidth),
+			height: height.value - 2 * unref(props.borderWidth),
+			duration: 0.5,
+			yoyo: true,
+			ease: "power1.inOut",
+			onUpdate() {
+				const currentX = gsap.getProperty(maskRectRef.value!, "x");
+				const currentY = gsap.getProperty(maskRectRef.value!, "y");
+				maskRectRef.value!.style.x = `${currentX}px`;
+				maskRectRef.value!.style.y = `${currentY}px`;
+			},
+			onComplete() {
+				// 在完成后清除 style 中设置的 height 和 width, 否则影响元素中 height 和 width 属性的设置
+				maskRectRef.value!.style.height = "";
+				maskRectRef.value!.style.width = "";
+			}
+		});
 	}
 }
 </script>
