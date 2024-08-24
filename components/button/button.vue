@@ -21,7 +21,10 @@
 				/>
 			</mask>
 		</svg>
-		<slot></slot>
+		<Loading class="loading" v-if="props.loading" :color="props.loadingColor" />
+		<div class="content">
+			<slot></slot>
+		</div>
 	</button>
 </template>
 
@@ -32,17 +35,22 @@ import rough from "roughjs";
 import { useElementBounding } from "@vueuse/core";
 import { gsap } from "gsap";
 import { random } from "xtt-utils";
+import Loading from "../loading/loading.vue";
 import { uniqueNumber } from "../../utils/unique";
 
 interface Props {
 	borderColor?: MaybeRef<string>;
 	borderWidth?: MaybeRef<number>;
 	activeBorderColor?: MaybeRef<string>;
+	loading?: MaybeRef<boolean>;
+	loadingColor?: MaybeRef<string>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	borderColor: "#8bcecb",
-	borderWidth: 2
+	borderWidth: 2,
+	loading: false,
+	loadingColor: "#000"
 });
 
 const maskId = "nami-id-" + uniqueNumber();
@@ -121,10 +129,7 @@ const maskRectRef = ref<SVGRectElement>();
 const tl = gsap.timeline({
 	duration: 0.5,
 	yoyo: true,
-	ease: "power1.inOut",
-	onComplete: () => {
-		console.log("onComplete");
-	}
+	ease: "power1.inOut"
 }); // 鼠标移入移出时的动画
 
 const setTimelineAnime = () => {
@@ -172,8 +177,23 @@ function handleMouseLeave() {
 <style scoped>
 @layer components.button {
 	.nami-button {
-		padding: 0.4em 0.8em;
+		padding: 0.4em 1em;
 		position: relative;
+		display: inline-flex;
+		flex-wrap: nowrap;
+		align-items: center;
+
+		&:has(.loading) {
+			gap: 0.25em;
+			padding-inline-start: 0.3em;
+		}
+
+		& > .content {
+			display: -webkit-box;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
 
 		& > .border-svg {
 			position: absolute;
