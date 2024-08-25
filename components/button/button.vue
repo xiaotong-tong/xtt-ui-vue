@@ -143,7 +143,9 @@ function handleMouseEnter() {
 			onUpdate() {
 				const currentX = gsap.getProperty(maskRectRef.value!, "x");
 				const currentY = gsap.getProperty(maskRectRef.value!, "y");
+				// @ts-ignore
 				maskRectRef.value!.style.x = `${currentX}px`;
+				// @ts-ignore
 				maskRectRef.value!.style.y = `${currentY}px`;
 			}
 		});
@@ -177,7 +179,9 @@ function handleMouseLeave() {
 			onUpdate() {
 				const currentX = gsap.getProperty(maskRectRef.value!, "x");
 				const currentY = gsap.getProperty(maskRectRef.value!, "y");
+				// @ts-ignore
 				maskRectRef.value!.style.x = `${currentX}px`;
+				// @ts-ignore
 				maskRectRef.value!.style.y = `${currentY}px`;
 			},
 			onComplete() {
