@@ -12,6 +12,7 @@ import markdown from "./components/markdown/markdown.vue";
 import qrCode from "./components/qrcode/qrcode.vue";
 import lineButton from "./components/button/lineButton.vue";
 import Button from "./components/button/button.vue";
+import Link from "./components/link/link.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -26,6 +27,7 @@ const withInstall = (app: App) => {
 	app.component("namiMarkdown", markdown);
 	app.component("namiQrCode", qrCode);
 	app.component("namiLineButton", lineButton);
+	app.component("namiLink", Link);
 };
 
 export {
@@ -42,6 +44,7 @@ export {
 	qrCode,
 	lineButton as NamiLineButton,
 	Button as NamiButton,
+	Link,
 	withInstall,
 	withInstall as default
 };
