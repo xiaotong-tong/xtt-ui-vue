@@ -4,7 +4,7 @@
 		:is="props.is"
 		class="nami-card"
 		:style="{
-			padding: props.padding + 'px'
+			'--card-padding': props.padding + 'px'
 		}"
 	>
 		<svg ref="svg" class="nami-svg" v-html="path"></svg>
@@ -89,17 +89,20 @@ useResizeObserver(card, () => {
 });
 </script>
 
-<style>
-.nami-card {
-	position: relative;
-	display: block;
-	width: 100%;
-	block-size: var(--default-height, 300px);
-	box-sizing: border-box;
-}
-.nami-svg {
-	position: absolute;
-	inset: 0;
-	z-index: -1;
+<style scoped>
+@layer components.card {
+	.nami-card {
+		position: relative;
+		width: 100%;
+		block-size: var(--default-height, 300px);
+		box-sizing: border-box;
+		padding: var(--card-padding, 5px);
+
+		& > .nami-svg {
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+		}
+	}
 }
 </style>

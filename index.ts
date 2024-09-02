@@ -1,3 +1,5 @@
+import "./index.css";
+
 import type { App } from "vue";
 import roughLine from "./components/line/rough/index.vue";
 import roughCard from "./components/card/rough/index.vue";
@@ -13,6 +15,7 @@ import qrCode from "./components/qrcode/qrcode.vue";
 import lineButton from "./components/button/lineButton.vue";
 import Button from "./components/button/button.vue";
 import Link from "./components/link/link.vue";
+import Dialog from "./components/dialog/dialog.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -44,6 +47,7 @@ export {
 	qrCode,
 	lineButton as NamiLineButton,
 	Button as NamiButton,
+	Dialog as Modal,
 	Link,
 	withInstall,
 	withInstall as default
