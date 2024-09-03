@@ -42,9 +42,9 @@
 
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from "vue";
-import roughCard from "../card/rough/index.vue";
 import NamiButton from "../button/button.vue";
 import rough from "roughjs";
+import { css } from "xtt-utils";
 
 interface Props {
 	color?: string;
@@ -66,7 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits(["ok", "cancel"]);
 
-const dialogRef = ref<typeof roughCard>();
+const dialogRef = ref<HTMLDialogElement>();
 
 // dialog 显示隐藏
 const show = defineModel("show", { type: Boolean, default: false });
@@ -74,16 +74,21 @@ watch(show, (val) => {
 	dialogRef.value?.[val ? "showModal" : "close"]();
 	if (val) {
 		addDecoration();
+
+		// 查询当前页面中共有多少个 dialog 在打开中
+		// 如果有打开的 dialog, 就向下移动 16px, 以作提示多重打开
+		const opendDialog = document.querySelectorAll("dialog[open]");
+		css(dialogRef.value!, "--dialog-opend-number", opendDialog.length + "");
 	}
 });
 
-function okHandle() {
+async function okHandle() {
+	await emits("ok");
 	show.value = false;
-	emits("ok");
 }
-function cancelHandle() {
+async function cancelHandle() {
+	await emits("cancel");
 	show.value = false;
-	emits("cancel");
 }
 
 // 添加装饰
@@ -136,12 +141,12 @@ window.addEventListener("keydown", (e) => {
 @layer components.dialog {
 	.dialog {
 		display: none;
-		position: relative;
 		width: var(--dialog-width, 800px);
 		height: var(--dialog-height, 500px);
 		padding: 20px;
-		background-color: #ffffffcc;
+		background-color: #ffffff;
 		box-shadow: 0 0 10px 0 #00000033;
+		transform: translateY(calc((var(--dialog-opend-number, 1) - 1) * 16px));
 
 		& > .decoration {
 			position: absolute;

@@ -16,6 +16,7 @@ import lineButton from "./components/button/lineButton.vue";
 import Button from "./components/button/button.vue";
 import Link from "./components/link/link.vue";
 import Dialog from "./components/dialog/dialog.vue";
+import Cropper from "./components/cropper/cropper.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -49,6 +50,7 @@ export {
 	Button as NamiButton,
 	Dialog as Modal,
 	Link,
+	Cropper,
 	withInstall,
 	withInstall as default
 };
