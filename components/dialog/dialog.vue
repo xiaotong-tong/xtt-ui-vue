@@ -20,9 +20,12 @@
 						<NamiButton @click="cancelHandle" :borderColor="props.color">{{
 							props.cancelText
 						}}</NamiButton>
-						<NamiButton @click="okHandle" :borderColor="props.color">{{
-							props.okText
-						}}</NamiButton>
+						<NamiButton
+							@click="okHandle"
+							:loading="okBtnLoading"
+							:borderColor="props.color"
+							>{{ props.okText }}</NamiButton
+						>
 					</div>
 				</slot>
 			</section>
@@ -52,6 +55,7 @@ interface Props {
 	height?: number | string;
 	closeBtn?: boolean;
 	okText?: string;
+	asyncOkCallback?: boolean;
 	cancelText?: string;
 }
 
@@ -61,10 +65,14 @@ const props = withDefaults(defineProps<Props>(), {
 	height: 500,
 	closeBtn: true,
 	okText: "确定",
-	cancelText: "取消"
+	cancelText: "取消",
+	asyncOkCallback: false
 });
 
-const emits = defineEmits(["ok", "cancel"]);
+const emits = defineEmits<{
+	(e: "ok", callback?: Function): void;
+	(e: "cancel"): void;
+}>();
 
 const dialogRef = ref<HTMLDialogElement>();
 
@@ -82,12 +90,24 @@ watch(show, (val) => {
 	}
 });
 
-async function okHandle() {
-	await emits("ok");
-	show.value = false;
+const okBtnLoading = ref(false);
+function okHandle() {
+	if (okBtnLoading.value) return;
+
+	if (props.asyncOkCallback) {
+		okBtnLoading.value = true;
+	}
+	emits("ok", () => {
+		okBtnLoading.value = false;
+		show.value = false;
+	});
+
+	if (!props.asyncOkCallback) {
+		show.value = false;
+	}
 }
-async function cancelHandle() {
-	await emits("cancel");
+function cancelHandle() {
+	emits("cancel");
 	show.value = false;
 }
 

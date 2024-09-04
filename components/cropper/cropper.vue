@@ -1,11 +1,17 @@
 <template>
-	<div @click="uploadImageEvent">
+	<div @click="uploadImageEvent" v-bind="$attrs">
 		<slot>
 			<NamiButton :borderColor="props.color">{{ props.buttonText }}</NamiButton>
 		</slot>
 	</div>
 
-	<Dialog v-model:show="dialogShow" @ok="okHandle" @cancel="cancelHandle" :height="600">
+	<Dialog
+		v-model:show="dialogShow"
+		@ok="okHandle"
+		:asyncOkCallback="props.asyncOkCallback"
+		@cancel="cancelHandle"
+		:height="600"
+	>
 		<cropper-canvas v-if="dialogShow" background class="cropper" ref="canvas">
 			<cropper-image
 				initial-center-size="contain"
@@ -58,6 +64,7 @@ const props = withDefaults(
 	defineProps<{
 		buttonText?: string;
 		color?: string;
+		asyncOkCallback?: boolean;
 	}>(),
 	{
 		buttonText: "上传图片",
@@ -68,7 +75,8 @@ const props = withDefaults(
 const emits = defineEmits<{
 	(
 		e: "submit",
-		data: { commentText: string; nickname: string; email: string; photoUrl: string }
+		data: { commentText: string; nickname: string; email: string; photoUrl: string },
+		callback?: Function
 	): void;
 }>();
 
@@ -98,14 +106,13 @@ const uploadImageEvent = () => {
 	};
 };
 
-async function cancelHandle() {
-	await URL.revokeObjectURL(src.value);
+function cancelHandle() {
+	URL.revokeObjectURL(src.value);
 }
 
-async function okHandle() {
+async function okHandle(callback?: Function) {
 	const canvas = await (selection.value as any)?.$toCanvas();
-	// canvas.toDataURL("image/png");
-	await emits("submit", canvas);
+	emits("submit", canvas, callback);
 	URL.revokeObjectURL(src.value);
 }
 </script>
