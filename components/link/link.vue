@@ -81,5 +81,9 @@ const linkClickEvent = (ev: MouseEvent) => {
 		padding: 4px 10px;
 		justify-content: center;
 	}
+
+	.link[type="primary"] {
+		color: #8bcecb;
+	}
 }
 </style>
