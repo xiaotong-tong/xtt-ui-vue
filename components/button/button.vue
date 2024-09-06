@@ -37,7 +37,7 @@ import { ref, unref, watch } from "vue";
 import rough from "roughjs";
 import { useElementBounding } from "@vueuse/core";
 import { gsap } from "gsap";
-import { random } from "xtt-utils";
+import { random, css } from "xtt-utils";
 import Loading from "../loading/loading.vue";
 import { uniqueNumber } from "../../utils/unique";
 
@@ -47,13 +47,15 @@ interface Props {
 	activeBorderColor?: MaybeRef<string>;
 	loading?: MaybeRef<boolean>;
 	loadingColor?: MaybeRef<string>;
+	animeLess?: MaybeRef<boolean>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	borderColor: "#8bcecb",
 	borderWidth: 2,
 	loading: false,
-	loadingColor: "#000"
+	loadingColor: "#000",
+	animeLess: false
 });
 
 const maskId = "nami-id-" + uniqueNumber();
@@ -131,22 +133,37 @@ watch(
 );
 
 function handleMouseEnter() {
-	if (maskRectRef.value) {
-		gsap.to(maskRectRef.value, {
-			x: width.value / 2,
-			y: height.value / 2,
+	const el = maskRectRef.value;
+	if (el) {
+		const toW = width.value / 2;
+		const toH = height.value / 2;
+
+		// 如果不需要动画
+		if (props.animeLess) {
+			css(el as unknown as HTMLElement, {
+				x: toW + "px",
+				y: toH + "px",
+				width: "0px",
+				height: "0px"
+			});
+
+			button.value?.style.setProperty("--stroke", unref(props.activeBorderColor) || null);
+			return;
+		}
+
+		gsap.to(el, {
+			x: toW,
+			y: toH,
 			width: 0,
 			height: 0,
 			duration: 0.5,
 			yoyo: true,
 			ease: "power1.inOut",
 			onUpdate() {
-				const currentX = gsap.getProperty(maskRectRef.value!, "x");
-				const currentY = gsap.getProperty(maskRectRef.value!, "y");
-				// @ts-ignore
-				maskRectRef.value!.style.x = `${currentX}px`;
-				// @ts-ignore
-				maskRectRef.value!.style.y = `${currentY}px`;
+				const currentX = gsap.getProperty(el, "x");
+				const currentY = gsap.getProperty(el, "y");
+				el.style.x = `${currentX}px`;
+				el.style.y = `${currentY}px`;
 			}
 		});
 
@@ -160,7 +177,22 @@ function handleMouseEnter() {
 }
 
 function handleMouseLeave() {
-	if (maskRectRef.value) {
+	const el = maskRectRef.value;
+	if (el) {
+		const borderWidth = unref(props.borderWidth);
+		// 如果不需要动画
+		if (props.animeLess) {
+			css(el as unknown as HTMLElement, {
+				x: borderWidth + "px",
+				y: borderWidth + "px",
+				width: `${width.value - 2 * borderWidth}px`,
+				height: `${height.value - 2 * borderWidth}px`
+			});
+
+			button.value?.style.setProperty("--stroke", unref(props.borderColor) || null);
+			return;
+		}
+
 		if (props.activeBorderColor) {
 			gsap.to(button.value!, {
 				"--stroke": unref(props.borderColor),
@@ -168,26 +200,24 @@ function handleMouseLeave() {
 			});
 		}
 
-		gsap.to(maskRectRef.value, {
-			x: unref(props.borderWidth),
-			y: unref(props.borderWidth),
-			width: width.value - 2 * unref(props.borderWidth),
-			height: height.value - 2 * unref(props.borderWidth),
+		gsap.to(el, {
+			x: borderWidth,
+			y: borderWidth,
+			width: width.value - 2 * borderWidth,
+			height: height.value - 2 * borderWidth,
 			duration: 0.5,
 			yoyo: true,
 			ease: "power1.inOut",
 			onUpdate() {
-				const currentX = gsap.getProperty(maskRectRef.value!, "x");
-				const currentY = gsap.getProperty(maskRectRef.value!, "y");
-				// @ts-ignore
-				maskRectRef.value!.style.x = `${currentX}px`;
-				// @ts-ignore
-				maskRectRef.value!.style.y = `${currentY}px`;
+				const currentX = gsap.getProperty(el, "x");
+				const currentY = gsap.getProperty(el, "y");
+				el.style.x = `${currentX}px`;
+				el.style.y = `${currentY}px`;
 			},
 			onComplete() {
 				// 在完成后清除 style 中设置的 height 和 width, 否则影响元素中 height 和 width 属性的设置
-				maskRectRef.value!.style.height = "";
-				maskRectRef.value!.style.width = "";
+				el.style.height = "";
+				el.style.width = "";
 			}
 		});
 	}
