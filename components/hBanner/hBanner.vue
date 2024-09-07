@@ -48,6 +48,5 @@ const props = withDefaults(defineProps<Props>(), {
 	height: 28px;
 	font-size: 20px;
 	font-weight: normal;
-	font-family: "luoliti", Arial, Helvetica, sans-serif;
 }
 </style>
