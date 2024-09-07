@@ -162,8 +162,8 @@ function handleMouseEnter() {
 			onUpdate() {
 				const currentX = gsap.getProperty(el, "x");
 				const currentY = gsap.getProperty(el, "y");
-				el.style.x = `${currentX}px`;
-				el.style.y = `${currentY}px`;
+				el.style.setProperty("x", `${currentX}px`);
+				el.style.setProperty("y", `${currentY}px`);
 			}
 		});
 
@@ -211,8 +211,8 @@ function handleMouseLeave() {
 			onUpdate() {
 				const currentX = gsap.getProperty(el, "x");
 				const currentY = gsap.getProperty(el, "y");
-				el.style.x = `${currentX}px`;
-				el.style.y = `${currentY}px`;
+				el.style.setProperty("x", `${currentX}px`);
+				el.style.setProperty("y", `${currentY}px`);
 			},
 			onComplete() {
 				// 在完成后清除 style 中设置的 height 和 width, 否则影响元素中 height 和 width 属性的设置
