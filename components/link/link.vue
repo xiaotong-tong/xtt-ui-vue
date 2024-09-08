@@ -15,8 +15,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useUrlSearchParams } from "@vueuse/core";
 import { useRouter } from "vue-router";
 const router = useRouter();
+
+const urlSearchParams = useUrlSearchParams("history", {
+	removeNullishValues: true
+});
 
 const props = defineProps({
 	to: {
@@ -30,6 +35,14 @@ const props = defineProps({
 	block: {
 		type: Boolean,
 		default: false
+	},
+	isQuery: {
+		type: Boolean,
+		default: false
+	},
+	queryValue: {
+		type: String,
+		default: ""
 	}
 });
 
@@ -38,6 +51,13 @@ const link = ref<HTMLAnchorElement>();
 const linkClickEvent = (ev: MouseEvent) => {
 	// 如果 to 属性为空，则不进行任何操作
 	if (props.to === "") {
+		ev.preventDefault();
+		return;
+	}
+
+	// 如果 to 属性是一个锚点，则添加 query 参数
+	if (props.isQuery) {
+		urlSearchParams[props.to] = props.queryValue;
 		ev.preventDefault();
 		return;
 	}
