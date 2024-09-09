@@ -3,6 +3,7 @@
 		:is="tagName"
 		class="nami-tag"
 		ref="tag"
+		:class="{ checked: props.checked }"
 		:style="{
 			'--tag-color': props.color
 		}"
@@ -17,11 +18,13 @@ import type { MaybeRef } from "vue";
 interface Props {
 	color?: MaybeRef<string>;
 	tagName?: string;
+	checked?: MaybeRef<boolean>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	color: "#e0e0e6",
-	tagName: "button"
+	tagName: "button",
+	checked: false
 });
 </script>
 
@@ -35,6 +38,11 @@ const props = withDefaults(defineProps<Props>(), {
 		color: var(--tag-color);
 		font-size: 14px;
 		min-width: 2em;
+	}
+
+	.nami-tag.checked {
+		background-color: var(--tag-color);
+		color: white;
 	}
 }
 </style>
