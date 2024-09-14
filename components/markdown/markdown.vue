@@ -150,6 +150,10 @@ function openAnime() {
 watch(
 	() => props.content,
 	async (content) => {
+		if (!unref(content)) {
+			markdownHtml.value = "";
+			return;
+		}
 		markdownHtml.value = await marked(unref(content));
 		nextTick(() => {
 			openAnime();
