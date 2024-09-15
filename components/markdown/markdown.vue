@@ -5,13 +5,12 @@
 		:class="{
 			'text-line': props.textLine
 		}"
-		v-html="markdownHtml"
 	></div>
 </template>
 
 <script setup lang="ts">
 import type { MaybeRef } from "vue";
-import { ref, watch, unref, onMounted, nextTick } from "vue";
+import { ref, watch, unref, onMounted, nextTick, createApp, onUnmounted } from "vue";
 import { gsap } from "gsap";
 import { marked } from "../../utils/marked";
 
@@ -25,12 +24,11 @@ const props = withDefaults(defineProps<Props>(), {
 	content: ""
 });
 
-const markdownHtml = ref("");
 const markdownBodyRef = ref<HTMLElement>();
 
 function openAnime() {
 	// 如果还没有内容，提前返回
-	if (!markdownBodyRef.value || !markdownHtml.value) {
+	if (!markdownBodyRef.value || !mdApp.value) {
 		return;
 	}
 
@@ -85,15 +83,23 @@ function openAnime() {
 	tl.play();
 }
 
+const mdApp = ref<ReturnType<typeof createApp>>();
 watch(
 	() => props.content,
 	async (content) => {
 		if (!unref(content)) {
-			markdownHtml.value = "";
+			mdApp.value?.unmount();
 			return;
 		}
 
-		markdownHtml.value = await marked(unref(content));
+		const html = await marked(unref(content));
+
+		mdApp.value = createApp({
+			template: html
+		});
+
+		mdApp.value.mount(markdownBodyRef.value!);
+
 		nextTick(() => {
 			openAnime();
 		});
@@ -105,6 +111,10 @@ watch(
 
 onMounted(() => {
 	openAnime();
+});
+
+onUnmounted(() => {
+	mdApp.value?.unmount();
 });
 </script>
 

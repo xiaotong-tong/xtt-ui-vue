@@ -14,6 +14,16 @@ hljs.registerLanguage("html", xml);
 hljs.registerLanguage("plaintext", plaintext as any);
 hljs.registerLanguage("diff", diff);
 
+// 重写 code 渲染方法
+const renderer = {
+	code(code: string, infostring: string): string {
+		if (infostring) {
+			return `<pre><code class="hljs language-${infostring}">${code}</code></pre>`;
+		}
+		return `<pre><code class="hljs">${code}</code></pre>`;
+	}
+};
+
 marked.setOptions({
 	gfm: true,
 	tables: true,
@@ -32,33 +42,44 @@ marked.use(
 			const language = hljs.getLanguage(lang) ? lang : "plaintext";
 			const resCode = hljs.highlight(code, { language });
 			// 添加代码块前的行号
-			return resCode.value
-				.replace(/\\?&(amp|lt|gt|nbsp);/g, (match) => {
-					if (match.startsWith("\\")) {
-						return match.slice(1);
-					}
+			return (
+				resCode.value
+					// .replace(/\\?&(amp|lt|gt|nbsp);/g, (match) => {
+					// 	if (match.startsWith("\\")) {
+					// 		return match.slice(1);
+					// 	}
 
-					// 下面一些字符在 xss 过滤时会被转义，但是这里因为是代码块，不会显示这些 HTML 实体，所以需要手动转义回来
-					return (
-						{
-							"&lt;": "<",
-							"&gt;": ">",
-							"&nbsp;": " ",
-							"&amp;": "&"
-						}[match] || match
-					);
-				})
-				.split("\n")
-				.map((line, index) => {
-					return `<span class="code-line" data-line-num="${index + 1}">${line}</span>`;
-				})
-				.join("\n");
+					// 	// 下面一些字符在 xss 过滤时会被转义，但是这里因为是代码块，不会显示这些 HTML 实体，所以需要手动转义回来
+					// 	return (
+					// 		{
+					// 			"&lt;": "<",
+					// 			"&gt;": ">",
+					// 			"&nbsp;": " ",
+					// 			"&amp;": "&"
+					// 		}[match] || match
+					// 	);
+					// })
+					.split("\n")
+					.map((line, index) => {
+						// 将 < 和 > 转义为 HTML 实体，避免 vue 模板解析错误
+						line = line.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+						return `<span class="code-line" data-line-num="${
+							index + 1
+						}">${line}</span>`;
+					})
+					.join("\n")
+			);
 		}
 	}),
 
 	gfmHeadingId({
 		prefix: "nami-md-"
-	})
+	}),
+
+	{
+		// @ts-ignore
+		renderer
+	}
 );
 
 export { marked };
