@@ -87,8 +87,9 @@ const mdApp = ref<ReturnType<typeof createApp>>();
 watch(
 	() => props.content,
 	async (content) => {
+		mdApp.value?.unmount();
+
 		if (!unref(content)) {
-			mdApp.value?.unmount();
 			return;
 		}
 
