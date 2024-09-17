@@ -167,6 +167,15 @@ onUnmounted(() => {
 	border-block-end: 1px solid var(--d-color, #f2b25b);
 }
 
+/* 歌词样式重置 */
+.markdown-body ::v-deep(:is(.lrc-lang-ja, #not-used-selector)) {
+	margin-bottom: 8px;
+}
+.markdown-body ::v-deep(.lrc-lang-zh) {
+	font-size: 12px;
+}
+/* 歌词样式重置 */
+
 /* 下面内容由 github-markdown-css 复制并更改 */
 .markdown-body {
 	color-scheme: light;
