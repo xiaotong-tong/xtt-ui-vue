@@ -61,8 +61,11 @@ marked.use(
 					// })
 					.split("\n")
 					.map((line, index) => {
-						// 将 < 和 > 转义为 HTML 实体，避免 vue 模板解析错误
-						line = line.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+						if (lang === "vue") {
+							// 将 < 和 > 转义为 HTML 实体，避免 vue 模板解析错误
+							line = line.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+						}
+
 						return `<span class="code-line" data-line-num="${
 							index + 1
 						}">${line}</span>`;
