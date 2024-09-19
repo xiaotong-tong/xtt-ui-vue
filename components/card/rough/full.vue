@@ -1,13 +1,6 @@
 <template>
-	<component
-		ref="card"
-		:is="props.is"
-		class="nami-card"
-		:style="{
-			'--card-padding': props.padding + 'px'
-		}"
-	>
-		<svg ref="svg" class="nami-svg"></svg>
+	<component ref="card" :is="props.is" class="nami-card">
+		<svg ref="svg" class="nami-svg" viewBox="0 0 160 90" preserveAspectRatio="none"></svg>
 		<slot></slot>
 	</component>
 </template>
@@ -16,28 +9,28 @@
 import type { Options } from "roughjs/bundled/core.d.ts";
 import { ref, onMounted, watch } from "vue";
 import rough from "roughjs";
-import { useCssVar, useResizeObserver } from "@vueuse/core";
+import { useCssVar } from "@vueuse/core";
 import { random } from "xtt-utils";
 
 interface Props {
 	is?: string;
 	color?: string;
 	height?: number | string;
-	padding?: number;
 	roughOptions?: Options;
 }
 
 const defaultRoughOptions = {
 	bowing: 2,
 	roughness: 0.8,
-	hachureAngle: random(125, 235)
+	hachureAngle: random(125, 235),
+	strokeWidth: 1,
+	fillWeight: 3
 };
 
 const props = withDefaults(defineProps<Props>(), {
 	is: "div",
 	color: "#000000",
-	height: "",
-	padding: 5
+	height: ""
 });
 
 const card = ref<HTMLElement | null>(null);
@@ -63,29 +56,18 @@ watch(
 
 function changeSvgFn() {
 	if (card.value && svg.value) {
-		const ract = card.value.getBoundingClientRect();
-
-		svg.value.setAttribute("viewBox", `0 0 ${ract.width} ${ract.height}`);
-
-		const p = props.padding;
-
-		const content = rough
-			.svg(svg.value)
-			.rectangle(p, p, ract.width - p * 2, ract.height - p * 2, {
-				...defaultRoughOptions,
-				...props.roughOptions,
-				stroke: props.roughOptions?.stroke ?? props.color
-			});
+		const content = rough.svg(svg.value).rectangle(0, 0, 160, 160, {
+			...defaultRoughOptions,
+			...props.roughOptions,
+			stroke: props.roughOptions?.stroke ?? props.color,
+			fill: props.roughOptions?.fill ?? props.color
+		});
 
 		svg.value.replaceChildren(content);
 	}
 }
 
 onMounted(() => {
-	changeSvgFn();
-});
-
-useResizeObserver(card, () => {
 	changeSvgFn();
 });
 </script>
@@ -97,7 +79,7 @@ useResizeObserver(card, () => {
 		width: 100%;
 		block-size: var(--default-height, 300px);
 		box-sizing: border-box;
-		padding: var(--card-padding, 5px);
+		padding: 5px;
 
 		& > .nami-svg {
 			position: absolute;

@@ -8,7 +8,8 @@
 		@mouseenter="handleMouseEnter"
 		@mouseleave="handleMouseLeave"
 	>
-		<svg aria-hidden="true" ref="borderSvgRef" class="border-svg" :mask="`url(#${maskId})`">
+		<!-- 供 mask 用 svg -->
+		<svg width="0" height="0" aria-hidden="true">
 			<mask :id="maskId">
 				<rect x="0" y="0" :width="width" :height="height" fill="white" />
 				<rect
@@ -24,6 +25,12 @@
 				/>
 			</mask>
 		</svg>
+		<svg
+			aria-hidden="true"
+			ref="borderSvgRef"
+			class="border-svg"
+			:mask="`url(#${maskId})`"
+		></svg>
 		<Loading class="loading" v-if="props.loading" :color="props.loadingColor" />
 		<div class="content">
 			<slot></slot>
@@ -108,16 +115,7 @@ function changeSvgFn() {
 
 		const content = topLine.rectangle(0, 0, w, h, options);
 
-		content.classList.add("border-svg-path");
-
-		content.setAttribute("mask", `url(#nami-border-mask)`);
-
-		const oldContentEl = borderSvgRef.value.querySelector(".border-svg-path");
-		if (oldContentEl) {
-			oldContentEl?.replaceWith(content);
-		} else {
-			borderSvgRef.value.appendChild(content);
-		}
+		borderSvgRef.value.replaceChildren(content);
 	}
 }
 

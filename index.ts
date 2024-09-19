@@ -3,6 +3,7 @@ import "./index.css";
 import type { App } from "vue";
 import roughLine from "./components/line/rough/index.vue";
 import roughCard from "./components/card/rough/index.vue";
+import roughFullCard from "./components/card/rough/full.vue";
 import roughIcon from "./components/icon/rough/index.vue";
 import webBG from "./components/web-bg/index.vue";
 import icon from "./components/icon/index.vue";
@@ -38,6 +39,7 @@ const withInstall = (app: App) => {
 export {
 	roughLine,
 	roughCard,
+	roughFullCard,
 	roughIcon,
 	icon,
 	webBG,
