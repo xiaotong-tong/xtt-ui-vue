@@ -16,7 +16,7 @@ import { marked } from "../../utils/marked";
 
 interface Props {
 	content: MaybeRef<string>;
-	theme?: "light" | "dark";
+	isDark?: MaybeRef<boolean>;
 	textLine?: MaybeRef<boolean>;
 }
 
@@ -117,11 +117,23 @@ onMounted(() => {
 onUnmounted(() => {
 	mdApp.value?.unmount();
 });
+
+watch(
+	() => props.isDark,
+	() => {
+		if (props.isDark) {
+			import("highlight.js/styles/github-dark.css");
+		} else {
+			import("highlight.js/styles/github.css");
+		}
+	},
+	{
+		immediate: true
+	}
+);
 </script>
 
 <style>
-@import "highlight.js/styles/github.css";
-@import "highlight.js/styles/github-dark.css";
 @import "github-markdown-css";
 </style>
 
