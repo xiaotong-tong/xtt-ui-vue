@@ -21,6 +21,11 @@ const renderer = {
 			return `<pre><code class="hljs language-${infostring}">${code}</code></pre>`;
 		}
 		return `<pre><code class="hljs">${code}</code></pre>`;
+	},
+	// 从写 img 渲染方法
+	image(href: string, title: string, text: string): string {
+		console.log(href, title, text);
+		return `<namiImage src="${href}" alt="${text}" fullView />`;
 	}
 };
 
@@ -66,9 +71,7 @@ marked.use(
 							line = line.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 						}
 
-						return `<span class="code-line" data-line-num="${
-							index + 1
-						}">${line}</span>`;
+						return `<span class="code-line" data-line-num="${index + 1}">${line}</span>`;
 					})
 					.join("\n")
 			);

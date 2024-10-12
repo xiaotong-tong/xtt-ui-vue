@@ -1,14 +1,38 @@
 <template>
 	<figure :style="customStyleOfWrapper">
-		<img v-bind="$attrs" :alt="alt || description" />
+		<img v-bind="$attrs" :alt="alt || description" :data-group="groupName || id" @click="handleImageClick" />
 		<figcaption v-if="description" :style="customStyleOfDesc">
 			{{ description }}
 		</figcaption>
 	</figure>
+
+	<!-- Full view -->
+	<Dialog
+		v-if="fullView"
+		class="fullviewDialog"
+		v-model:show="fullViewDialogShow"
+		width="90lvw"
+		height="90lvh"
+		:footer="false"
+		transparent
+		:customStyleOfCloseBtn="{
+			width: '36px',
+			height: '36px'
+		}"
+	>
+		<figure class="fullview">
+			<img v-bind="$attrs" :alt="alt || description" :data-group="groupName || id" />
+			<figcaption v-if="description" :style="customStyleOfDesc">
+				{{ description }}
+			</figcaption>
+		</figure>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
 import type { StyleValue } from "vue";
+import { useId, ref } from "vue";
+import Dialog from "../dialog/dialog.vue";
 
 interface Props {
 	customStyleOfWrapper?: StyleValue;
@@ -16,9 +40,20 @@ interface Props {
 	description?: string;
 	groupName?: string;
 	alt?: string;
+	fullView?: boolean;
 }
 
-const { description, alt, customStyleOfWrapper } = defineProps<Props>();
+const { description, alt, customStyleOfWrapper, groupName, fullView = false } = defineProps<Props>();
+
+const id = useId();
+
+function handleImageClick() {
+	if (fullView !== false) {
+		fullViewDialogShow.value = true;
+	}
+}
+
+const fullViewDialogShow = ref(false);
 </script>
 
 <style scoped>
@@ -29,7 +64,7 @@ const { description, alt, customStyleOfWrapper } = defineProps<Props>();
 
 	img {
 		display: block;
-		width: 100%;
+		max-width: 100%;
 		height: auto;
 	}
 
@@ -38,6 +73,17 @@ const { description, alt, customStyleOfWrapper } = defineProps<Props>();
 		margin-top: 0.5em;
 		font-size: 12px;
 		color: #999;
+	}
+
+	.fullview {
+		width: 100%;
+		height: 100%;
+
+		& > img {
+			width: 100%;
+			height: calc(100% - 1.5em);
+			object-fit: contain;
+		}
 	}
 }
 </style>

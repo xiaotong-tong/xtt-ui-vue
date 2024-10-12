@@ -3,11 +3,10 @@
 		<dialog
 			ref="dialogRef"
 			class="dialog"
+			:class="{ transparent: props.transparent }"
 			:style="{
-				'--dialog-width':
-					typeof props.width === 'number' ? `${props.width}px` : props.width,
-				'--dialog-height':
-					typeof props.height === 'number' ? `${props.height}px` : props.height
+				'--dialog-width': typeof props.width === 'number' ? `${props.width}px` : props.width,
+				'--dialog-height': typeof props.height === 'number' ? `${props.height}px` : props.height
 			}"
 		>
 			<svg ref="decorationRef" class="decoration"></svg>
@@ -15,28 +14,22 @@
 				<div class="main">
 					<slot></slot>
 				</div>
-				<slot name="footer">
-					<div class="footer">
-						<NamiButton @click="cancelHandle" :borderColor="props.color">{{
-							props.cancelText
-						}}</NamiButton>
-						<NamiButton
-							@click="okHandle"
-							:loading="okBtnLoading"
-							:borderColor="props.color"
-							>{{ props.okText }}</NamiButton
-						>
-					</div>
-				</slot>
+				<template v-if="props.footer">
+					<slot name="footer">
+						<div class="footer">
+							<NamiButton @click="cancelHandle" :borderColor="props.color">{{
+								props.cancelText
+							}}</NamiButton>
+							<NamiButton @click="okHandle" :loading="okBtnLoading" :borderColor="props.color">{{
+								props.okText
+							}}</NamiButton>
+						</div>
+					</slot>
+				</template>
 			</section>
-			<button v-if="props.closeBtn" class="close" @click="cancelHandle">
+			<button v-if="props.closeBtn" class="close" @click="cancelHandle" :style="props.customStyleOfCloseBtn">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M6 18L18 6M6 6l12 12"
-					/>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 				</svg>
 			</button>
 		</dialog>
@@ -44,19 +37,23 @@
 </template>
 
 <script setup lang="ts">
+import type { StyleValue } from "vue";
 import { ref, watch, onUnmounted } from "vue";
 import NamiButton from "../button/button.vue";
 import rough from "roughjs";
 import { css } from "xtt-utils";
 
 interface Props {
+	customStyleOfCloseBtn?: StyleValue;
 	color?: string;
 	width?: number | string;
 	height?: number | string;
 	closeBtn?: boolean;
+	footer?: boolean;
 	okText?: string;
 	asyncOkCallback?: boolean;
 	cancelText?: string;
+	transparent?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -64,9 +61,11 @@ const props = withDefaults(defineProps<Props>(), {
 	width: 800,
 	height: 500,
 	closeBtn: true,
+	footer: true,
 	okText: "确定",
 	cancelText: "取消",
-	asyncOkCallback: false
+	asyncOkCallback: false,
+	transparent: false
 });
 
 const emits = defineEmits<{
@@ -125,9 +124,9 @@ function addDecoration() {
 
 	// 添加线条
 	const path1 = rc.path(
-		`M0 16 L${w / 3} 16 Z M16 0 L16 ${h / 1.5} Z M${w - 16} ${h} L${w - 16} ${
-			h - h / 1.5
-		} Z M${w} ${h - 16} L${w - w / 3} ${h - 16} Z`,
+		`M0 16 L${w / 3} 16 Z M16 0 L16 ${h / 1.5} Z M${w - 16} ${h} L${w - 16} ${h - h / 1.5} Z M${w} ${h - 16} L${
+			w - w / 3
+		} ${h - 16} Z`,
 		{
 			stroke: props.color,
 			strokeWidth: 1,
@@ -167,6 +166,12 @@ window.addEventListener("keydown", (e) => {
 		background-color: #ffffff;
 		box-shadow: 0 0 10px 0 #00000033;
 		transform: translateY(calc((var(--dialog-opend-number, 1) - 1) * 16px));
+
+		&.transparent {
+			background-color: #ffffffaa;
+			backdrop-filter: blur(5px);
+			box-shadow: none;
+		}
 
 		& > .decoration {
 			position: absolute;

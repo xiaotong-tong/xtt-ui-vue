@@ -13,6 +13,7 @@ import type { MaybeRef } from "vue";
 import { ref, watch, unref, onMounted, nextTick, createApp, onUnmounted } from "vue";
 import { gsap } from "gsap";
 import { marked } from "../../utils/marked";
+import image from "../image/image.vue";
 
 interface Props {
 	content: MaybeRef<string>;
@@ -98,6 +99,8 @@ watch(
 		mdApp.value = createApp({
 			template: html
 		});
+
+		mdApp.value.component("namiImage", image);
 
 		mdApp.value.mount(markdownBodyRef.value!);
 
