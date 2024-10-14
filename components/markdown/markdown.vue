@@ -185,6 +185,32 @@ watch(
 	border-block-end: 1px solid var(--d-color, #f2b25b);
 }
 
+.markdown-body ::v-deep(li:not(:has(ul))) {
+	display: flex;
+	align-items: center;
+}
+/* 如果有两个以上元素 */
+.markdown-body ::v-deep(li:has(p + p)) {
+	flex-wrap: wrap;
+
+	& > p {
+		width: 100%;
+	}
+
+	& > p:first-child {
+		width: calc(100% - 3em);
+	}
+}
+.markdown-body ::v-deep(li::before) {
+	content: "";
+	height: 1.5em;
+	width: 3em;
+	background: url("/images/jian.webp");
+	background-size: contain;
+	background-repeat: no-repeat;
+	vertical-align: middle;
+}
+
 /* 歌词样式重置 */
 .markdown-body ::v-deep(:is(.lrc-lang-ja, #not-used-selector)) {
 	margin-bottom: 8px;
