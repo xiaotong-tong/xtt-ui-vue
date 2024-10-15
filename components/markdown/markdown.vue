@@ -13,7 +13,9 @@ import type { MaybeRef } from "vue";
 import { ref, watch, unref, onMounted, nextTick, createApp, onUnmounted } from "vue";
 import { gsap } from "gsap";
 import { marked } from "../../utils/marked";
-import image from "../image/image.vue";
+import Image from "../image/image.vue";
+import Menu from "../menu/menu.vue";
+import menuItem from "../menu/menuItem.vue";
 
 interface Props {
 	content: MaybeRef<string>;
@@ -100,7 +102,9 @@ watch(
 			template: html
 		});
 
-		mdApp.value.component("namiImage", image);
+		mdApp.value.component("NamiImage", Image);
+		mdApp.value.component("NamiMenu", Menu);
+		mdApp.value.component("NamiMenuItem", menuItem);
 
 		mdApp.value.mount(markdownBodyRef.value!);
 
@@ -183,32 +187,6 @@ watch(
 
 .markdown-body.text-line ::v-deep(p) {
 	border-block-end: 1px solid var(--d-color, #f2b25b);
-}
-
-.markdown-body ::v-deep(li:not(:has(ul))) {
-	display: flex;
-	align-items: center;
-}
-/* 如果有两个以上元素 */
-.markdown-body ::v-deep(li:has(p + p)) {
-	flex-wrap: wrap;
-
-	& > p {
-		width: 100%;
-	}
-
-	& > p:first-child {
-		width: calc(100% - 3em);
-	}
-}
-.markdown-body ::v-deep(li::before) {
-	content: "";
-	height: 1.5em;
-	width: 3em;
-	background: url("/images/jian.webp");
-	background-size: contain;
-	background-repeat: no-repeat;
-	vertical-align: middle;
 }
 
 /* 歌词样式重置 */

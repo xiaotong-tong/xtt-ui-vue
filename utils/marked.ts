@@ -25,7 +25,15 @@ const renderer = {
 	// 从写 img 渲染方法
 	image(href: string, title: string, text: string): string {
 		console.log(href, title, text);
-		return `<namiImage src="${href}" alt="${text}" fullView />`;
+		return `<NamiImage src="${href}" alt="${text}" fullView />`;
+	},
+	// 重写 ul 和 li 渲染方法
+	list(body: string, ordered: boolean): string {
+		return `<NamiMenu is="${ordered ? "ol" : "ul"}">${body}</NamiMenu>`;
+	},
+	listitem({ text }: { text: string }): string {
+		console.log(text);
+		return `<NamiMenuItem>${text}</NamiMenuItem>`;
 	}
 };
 
