@@ -161,7 +161,7 @@ watch(
 
 	max-width: 100%;
 	overflow-x: auto;
-	padding-block-start: 24px;
+	padding-inline: 8px;
 }
 .theme-dark .markdown-body {
 	--md-color-border-default: #30363d;
