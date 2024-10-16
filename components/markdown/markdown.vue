@@ -16,6 +16,7 @@ import { marked } from "../../utils/marked";
 import Image from "../image/image.vue";
 import Menu from "../menu/menu.vue";
 import menuItem from "../menu/menuItem.vue";
+import RoughLine from "../line/rough/index.vue";
 
 interface Props {
 	content: MaybeRef<string>;
@@ -105,6 +106,7 @@ watch(
 		mdApp.value.component("NamiImage", Image);
 		mdApp.value.component("NamiMenu", Menu);
 		mdApp.value.component("NamiMenuItem", menuItem);
+		mdApp.value.component("NamiRoughLine", RoughLine);
 
 		mdApp.value.mount(markdownBodyRef.value!);
 
