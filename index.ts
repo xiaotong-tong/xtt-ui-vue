@@ -15,6 +15,7 @@ import markdown from "./components/markdown/markdown.vue";
 import qrCode from "./components/qrcode/qrcode.vue";
 import lineButton from "./components/button/lineButton.vue";
 import Button from "./components/button/button.vue";
+import TextButton from "./components/button/textButton.vue";
 import Link from "./components/link/link.vue";
 import Dialog from "./components/dialog/dialog.vue";
 import Cropper from "./components/cropper/cropper.vue";
@@ -52,8 +53,9 @@ export {
 	// live2d,
 	markdown,
 	qrCode,
-	lineButton as NamiLineButton,
+	lineButton,
 	Button as NamiButton,
+	TextButton,
 	Dialog as Modal,
 	Link,
 	Cropper,

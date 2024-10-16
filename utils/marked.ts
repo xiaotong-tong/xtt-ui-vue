@@ -23,8 +23,7 @@ const renderer = {
 		return `<pre><code class="hljs">${code}</code></pre>`;
 	},
 	// 从写 img 渲染方法
-	image(href: string, title: string, text: string): string {
-		console.log(href, title, text);
+	image(href: string, _: string, text: string): string {
 		return `<NamiImage src="${href}" alt="${text}" fullView />`;
 	},
 	// 重写 ul 和 li 渲染方法
@@ -32,7 +31,6 @@ const renderer = {
 		return `<NamiMenu is="${ordered ? "ol" : "ul"}">${body}</NamiMenu>`;
 	},
 	listitem({ text }: { text: string }): string {
-		console.log(text);
 		return `<NamiMenuItem>${text}</NamiMenuItem>`;
 	}
 };
