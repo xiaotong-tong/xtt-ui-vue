@@ -40,7 +40,7 @@ function createTitleMaskOfTitle() {
 	}px, ${width.value + 16 + 2}px 0, 100% 0, 100% 100%, 0 100%, 0 0)`;
 }
 
-watch([title, width, height], createTitleMaskOfTitle);
+watch([width, height], createTitleMaskOfTitle);
 
 onMounted(createTitleMaskOfTitle);
 </script>
