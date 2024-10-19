@@ -1,0 +1,101 @@
+<template>
+	<fieldset class="box">
+		<legend class="title" ref="titleRef">
+			<slot name="legend">{{ title }}</slot>
+		</legend>
+		<slot><span class="empty" style="height: 1em">&nbsp;</span></slot>
+		<div class="border-wrap" aria-hidden="true" ref="borderRef">
+			<Line class="top" :color="borderColor" :height="2"></Line>
+			<Line class="bottom" :color="borderColor" :height="2"></Line>
+			<Line class="left" :color="borderColor" :height="2" dir="y"></Line>
+			<Line class="right" :color="borderColor" :height="2" dir="y" rotationWise="counter-clockwise"></Line>
+		</div>
+	</fieldset>
+</template>
+
+<script setup lang="ts">
+import type { MaybeRef } from "vue";
+import { ref, onMounted, watch } from "vue";
+import Line from "../line/rough/index.vue";
+import { useElementBounding } from "@vueuse/core";
+
+interface Props {
+	title?: MaybeRef<string>;
+	borderColor?: MaybeRef<string>;
+}
+
+const { title, borderColor = "#aaa" } = defineProps<Props>();
+
+const titleRef = ref<HTMLElement>();
+const borderRef = ref<HTMLElement>();
+
+const { width, height } = useElementBounding(titleRef);
+
+function createTitleMaskOfTitle() {
+	if (!titleRef.value) return;
+	if (!borderRef.value) return;
+
+	borderRef.value.style.clipPath = `polygon(0 0, 14px 0, 14px ${height.value}px, ${width.value + 16 + 2}px ${
+		height.value
+	}px, ${width.value + 16 + 2}px 0, 100% 0, 100% 100%, 0 100%, 0 0)`;
+}
+
+watch([title, width, height], createTitleMaskOfTitle);
+
+onMounted(createTitleMaskOfTitle);
+</script>
+
+<style scoped>
+@layer components.card.fieldset {
+	.box {
+		border: none;
+		position: relative;
+		overflow: hidden;
+		height: calc-size(auto, max(size, 3em));
+		padding: 20px 8px 8px;
+
+		& > .title {
+			position: absolute;
+			top: 0;
+			left: 16px;
+			padding: 0;
+		}
+
+		& > .border-wrap {
+			position: absolute;
+			inset: 0;
+			height: calc-size(auto, max(size, 3em));
+			pointer-events: none;
+			z-index: 9999;
+
+			& > .top {
+				position: absolute;
+				top: 10px;
+				left: 0;
+				right: 0;
+			}
+
+			& > .bottom {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+
+			& > .left {
+				position: absolute;
+				top: 10px;
+				left: 2px;
+				width: 9999px;
+			}
+
+			& > .right {
+				position: absolute;
+				top: 10px;
+				right: 2px;
+				width: 9999px;
+			}
+		}
+	}
+}
+</style>

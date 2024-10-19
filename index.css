@@ -1,2 +1,2 @@
-/* 设置 dialog css 样式的优先级 高于 card 样式的优先级 */
-@layer components.card, components.dialog;
+/* 组件 CSS 优先级 line < card < dialog */
+@layer components.line, components.card, components.dialog;
