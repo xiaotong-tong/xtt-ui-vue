@@ -200,6 +200,10 @@ watch(
 }
 /* 歌词样式重置 */
 
+.markdown-body ::v-deep(.menu-item-content > p) {
+	margin-block-end: 0;
+}
+
 /* 下面内容由 github-markdown-css 复制并更改 */
 .markdown-body {
 	color-scheme: light;

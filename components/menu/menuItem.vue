@@ -30,7 +30,7 @@ const { preImageUrl = "/images/jian.webp", prev = true } = defineProps<Props>();
 @layer components.menuItem {
 	.menu-item {
 		display: flex;
-		align-items: center;
+		align-items: start;
 	}
 
 	.menu-item-pre-style {
