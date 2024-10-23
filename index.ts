@@ -24,6 +24,7 @@ import Image from "./components/image/image.vue";
 import Menu from "./components/menu/menu.vue";
 import MenuItem from "./components/menu/menuItem.vue";
 import FieldsetCard from "./components/card/fieldset.vue";
+import Panel from "./components/panel/panel.vue";
 
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
@@ -65,6 +66,7 @@ export {
 	Menu,
 	MenuItem,
 	FieldsetCard,
+	Panel,
 	withInstall,
 	withInstall as default
 };
