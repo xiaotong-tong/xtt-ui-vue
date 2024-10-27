@@ -34,11 +34,6 @@ const withInstall = (app: App) => {
 	app.component("namiWebBG", webBG);
 	app.component("namiListMasonry", listMasonry);
 	app.component("namiListMasonryItem", listMasonryItem);
-	app.component("namiHBanner", hBanner);
-	// app.component("namiLive2d", live2d);
-	app.component("namiMarkdown", markdown);
-	app.component("namiQrCode", qrCode);
-	app.component("namiLineButton", lineButton);
 	app.component("namiLink", Link);
 };
 

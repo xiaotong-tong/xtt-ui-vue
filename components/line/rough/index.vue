@@ -16,8 +16,9 @@
 </template>
 
 <script setup lang="ts">
+import type { MaybeRef } from "vue";
 import type { Options } from "roughjs/bundled/core.d.ts";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, unref } from "vue";
 import rough from "roughjs";
 import { useResizeObserver } from "@vueuse/core";
 import { random } from "xtt-utils";
@@ -25,7 +26,7 @@ import { random } from "xtt-utils";
 interface Props {
 	is?: string;
 	height?: number | string;
-	color?: string;
+	color?: MaybeRef<string>;
 	dir?: "x" | "y";
 	rotationWise?: "clockwise" | "counter-clockwise";
 	roughOptions?: Options;
@@ -60,7 +61,7 @@ const changeSvgFn = () => {
 		path.value = rough.svg(svg.value).rectangle(0, 0, ract.width, ract.height, {
 			...defaultRoughOptions,
 			...props.roughOptions,
-			fill: props.roughOptions?.fill ?? props.color
+			fill: props.roughOptions?.fill ?? unref(props.color)
 		}).outerHTML;
 
 		line.value.classList.add(`nami-line-dir-${props.dir}`);
