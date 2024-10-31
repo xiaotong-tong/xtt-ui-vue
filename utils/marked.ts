@@ -1,5 +1,4 @@
 import type { MarkedOptions } from "marked";
-import { useStore } from "@/stores";
 import { marked } from "marked";
 import hljs from "highlight.js/lib/core";
 import { gfmHeadingId } from "marked-gfm-heading-id";
@@ -36,8 +35,7 @@ const renderer = {
 	},
 	// 重写 line 渲染方法
 	hr(): string {
-		const store = useStore();
-		return `<NamiRoughLine color="${store.currentTheme}" />`;
+		return `<NamiRoughLine />`;
 	}
 };
 
