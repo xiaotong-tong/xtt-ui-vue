@@ -30,7 +30,6 @@ const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
 	app.component("namiRoughCard", roughCard);
 	app.component("namiRoughIcon", roughIcon);
-	app.component("namiCIcon", icon);
 	app.component("namiWebBG", webBG);
 	app.component("namiListMasonry", listMasonry);
 	app.component("namiListMasonryItem", listMasonryItem);
@@ -42,7 +41,7 @@ export {
 	roughCard,
 	roughFullCard,
 	roughIcon,
-	icon,
+	icon as Icon,
 	webBG,
 	listMasonry,
 	listMasonryItem,
