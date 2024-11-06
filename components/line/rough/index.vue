@@ -22,6 +22,7 @@ import { ref, onMounted, watch, unref } from "vue";
 import rough from "roughjs";
 import { useResizeObserver } from "@vueuse/core";
 import { random } from "xtt-utils";
+import { defaultColor } from "../../../utils/config";
 
 interface Props {
 	is?: string;
@@ -32,18 +33,20 @@ interface Props {
 	roughOptions?: Options;
 }
 
+const defaultFillWeight = random(2, 4);
+
 const defaultRoughOptions = {
-	fillWeight: 3,
+	fillWeight: defaultFillWeight,
+	hachureGap: defaultFillWeight * 1.5,
 	stroke: "none",
-	hachureAngle: random(125, 235)
+	hachureAngle: random(125, 245)
 };
 
 const props = withDefaults(defineProps<Props>(), {
 	is: "div",
 	height: 3,
-	color: "#000000",
-	dir: "x",
-	rotationWise: "clockwise"
+	dir: "x", // x: 横向，y: 纵向
+	rotationWise: "clockwise" // 为 y 时有效，旋转方向
 });
 
 const line = ref<HTMLElement | null>(null);
@@ -61,7 +64,7 @@ const changeSvgFn = () => {
 		path.value = rough.svg(svg.value).rectangle(0, 0, ract.width, ract.height, {
 			...defaultRoughOptions,
 			...props.roughOptions,
-			fill: props.roughOptions?.fill ?? unref(props.color)
+			fill: props.roughOptions?.fill ?? unref(props.color) ?? unref(defaultColor)
 		}).outerHTML;
 
 		line.value.classList.add(`nami-line-dir-${props.dir}`);
@@ -77,9 +80,18 @@ useResizeObserver(line, () => {
 });
 
 watch(
-	() => props.color,
+	() => unref(props.color),
 	() => {
 		changeSvgFn();
+	}
+);
+watch(
+	() => unref(defaultColor),
+	() => {
+		// 如果没有设置 props.color，就更新svg，如果设置了，此属性不该生效
+		if (!props.color) {
+			changeSvgFn();
+		}
 	}
 );
 </script>

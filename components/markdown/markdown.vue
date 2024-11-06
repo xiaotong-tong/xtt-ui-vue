@@ -200,9 +200,14 @@ watch(
 }
 /* 歌词样式重置 */
 
+/* menu 组件样式适配 */
 .markdown-body ::v-deep(.menu-item-content > p) {
 	margin-block-end: 0;
 }
+.markdown-body ::v-deep(.menu .menu) {
+	padding-inline-start: 0;
+}
+/* menu 组件样式适配 end */
 
 /* 下面内容由 github-markdown-css 复制并更改 */
 .markdown-body {

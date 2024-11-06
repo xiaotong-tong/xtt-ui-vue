@@ -42,8 +42,7 @@ function initItem(node: HTMLElement) {
 	const minIndex = colsHeight.value.indexOf(Math.min(...colsHeight.value));
 	const min = colsHeight.value[minIndex];
 
-	itemWidth.value =
-		(width.value - unref(props.columnGap) * (unref(colsCount) - 1)) / unref(colsCount);
+	itemWidth.value = (width.value - unref(props.columnGap) * (unref(colsCount) - 1)) / unref(colsCount);
 
 	node.style.width = `${itemWidth.value}px`;
 	node.style.transform = `translateY(${min}px) translateX(${
@@ -107,10 +106,12 @@ watch(
 </script>
 
 <style scoped>
-.list {
-	display: block;
-	box-sizing: border-box;
-	width: 100%;
-	position: relative;
+@layer components.list.masonry {
+	.list {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		position: relative;
+	}
 }
 </style>

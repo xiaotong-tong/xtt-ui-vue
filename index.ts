@@ -1,6 +1,8 @@
+import type { App } from "vue";
 import "./index.css";
 
-import type { App } from "vue";
+import config from "./utils/config";
+
 import roughLine from "./components/line/rough/index.vue";
 import roughCard from "./components/card/rough/index.vue";
 import roughFullCard from "./components/card/rough/full.vue";
@@ -62,5 +64,6 @@ export {
 	FieldsetCard,
 	Panel,
 	withInstall,
-	withInstall as default
+	withInstall as default,
+	config
 };
