@@ -4,7 +4,7 @@
 		ref="header"
 		:is="targetName"
 		:style="{
-			'--bindColor': color
+			'--bindColor': color || defaultColor
 		}"
 	>
 		<div class="bg" aria-hidden="true">
@@ -22,12 +22,14 @@
 </template>
 
 <script setup lang="ts">
+import { defaultColor } from "../../utils/config";
+
 interface Props {
 	targetName?: string;
 	color?: string;
 }
 
-const { targetName = "h2", color = "#f17559" } = defineProps<Props>();
+const { targetName = "h2", color } = defineProps<Props>();
 </script>
 
 <style scoped>
@@ -101,7 +103,7 @@ const { targetName = "h2", color = "#f17559" } = defineProps<Props>();
 				position: absolute;
 				left: 26px;
 				right: 16px;
-				bottom: 12px;
+				bottom: 10px;
 				height: 12px;
 				z-index: -9;
 
