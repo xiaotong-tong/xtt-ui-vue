@@ -1,6 +1,12 @@
 <template>
 	<figure :style="customStyleOfWrapper">
-		<img v-bind="$attrs" :alt="alt || description" :data-group="groupName || id" @click="handleImageClick" />
+		<img
+			v-bind="$attrs"
+			:src="src"
+			:alt="alt || description"
+			:data-group="groupName || id"
+			@click="handleImageClick"
+		/>
 		<figcaption v-if="description" :style="customStyleOfDesc">
 			{{ description }}
 		</figcaption>
@@ -21,7 +27,7 @@
 		}"
 	>
 		<figure class="fullview">
-			<img v-bind="$attrs" :alt="alt || description" :data-group="groupName || id" />
+			<img :src="src" :alt="alt || description" :data-group="groupName || id" />
 			<figcaption v-if="description" :style="customStyleOfDesc">
 				{{ description }}
 			</figcaption>
@@ -41,9 +47,10 @@ interface Props {
 	groupName?: string;
 	alt?: string;
 	fullView?: boolean;
+	src: string;
 }
 
-const { description, alt, customStyleOfWrapper, groupName, fullView = false } = defineProps<Props>();
+const { description, alt, customStyleOfWrapper, groupName, fullView = false, src } = defineProps<Props>();
 
 const id = useId();
 

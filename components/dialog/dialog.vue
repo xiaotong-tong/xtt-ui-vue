@@ -6,7 +6,8 @@
 			:class="{ transparent: props.transparent }"
 			:style="{
 				'--dialog-width': typeof props.width === 'number' ? `${props.width}px` : props.width,
-				'--dialog-height': typeof props.height === 'number' ? `${props.height}px` : props.height
+				'--dialog-height': typeof props.height === 'number' ? `${props.height}px` : props.height,
+				'--dialog-default-color': props.color
 			}"
 		>
 			<svg ref="decorationRef" class="decoration"></svg>
@@ -38,10 +39,11 @@
 
 <script setup lang="ts">
 import type { StyleValue } from "vue";
-import { ref, watch, onUnmounted } from "vue";
+import { ref, watch, onUnmounted, unref } from "vue";
 import NamiButton from "../button/button.vue";
 import rough from "roughjs";
 import { css } from "xtt-utils";
+import { defaultColor } from "../../utils/config";
 
 interface Props {
 	customStyleOfCloseBtn?: StyleValue;
@@ -57,7 +59,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	color: "#a5a9aa",
+	color: () => unref(defaultColor),
 	width: 800,
 	height: 500,
 	closeBtn: true,
@@ -203,7 +205,11 @@ window.addEventListener("keydown", (e) => {
 			right: 10px;
 			width: 24px;
 			height: 24px;
-			color: #928575;
+			color: var(--dialog-default-color, #928575);
+
+			&:focus {
+				outline: 2px solid var(--dialog-default-color, #928575);
+			}
 		}
 	}
 
