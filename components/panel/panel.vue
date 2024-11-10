@@ -15,7 +15,12 @@
 				<div class="line"></div>
 			</div>
 		</div>
-		<div class="content">
+		<div
+			class="content"
+			:style="{
+				'margin-block-start': contentMarginBlockStart
+			}"
+		>
 			<slot></slot>
 		</div>
 	</component>
@@ -27,9 +32,10 @@ import { defaultColor } from "../../utils/config";
 interface Props {
 	targetName?: string;
 	color?: string;
+	contentMarginBlockStart?: string;
 }
 
-const { targetName = "h2", color } = defineProps<Props>();
+const { targetName = "h2", color, contentMarginBlockStart = "4px" } = defineProps<Props>();
 </script>
 
 <style scoped>
@@ -123,7 +129,6 @@ const { targetName = "h2", color } = defineProps<Props>();
 		}
 
 		& > .content {
-			margin-block-start: 4px;
 			min-inline-size: 4em;
 			text-align: center;
 			font-size: 22px;
