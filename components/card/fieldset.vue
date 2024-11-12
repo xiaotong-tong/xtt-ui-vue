@@ -1,16 +1,18 @@
 <template>
-	<fieldset class="box">
-		<legend class="title" ref="titleRef">
+	<section class="box">
+		<div class="title" ref="titleRef">
 			<slot name="legend">{{ title }}</slot>
-		</legend>
-		<slot><span class="empty" style="height: 1em">&nbsp;</span></slot>
+		</div>
+		<div class="content">
+			<slot><span class="empty" style="height: 1em">&nbsp;</span></slot>
+		</div>
 		<div class="border-wrap" aria-hidden="true" ref="borderRef">
 			<Line class="top" :color="borderColor" :height="2"></Line>
 			<Line class="bottom" :color="borderColor" :height="2"></Line>
 			<Line class="left" :color="borderColor" :height="2" dir="y"></Line>
 			<Line class="right" :color="borderColor" :height="2" dir="y" rotationWise="counter-clockwise"></Line>
 		</div>
-	</fieldset>
+	</section>
 </template>
 
 <script setup lang="ts">
@@ -18,13 +20,14 @@ import type { MaybeRef } from "vue";
 import { ref, onMounted, watch } from "vue";
 import Line from "../line/rough/index.vue";
 import { useElementBounding } from "@vueuse/core";
+import { defaultColor } from "../../utils/config";
 
 interface Props {
 	title?: MaybeRef<string>;
 	borderColor?: MaybeRef<string>;
 }
 
-const { title, borderColor = "#aaa" } = defineProps<Props>();
+const { title, borderColor = defaultColor } = defineProps<Props>();
 
 const titleRef = ref<HTMLElement>();
 const borderRef = ref<HTMLElement>();
@@ -59,6 +62,13 @@ onMounted(createTitleMaskOfTitle);
 			top: 0;
 			left: 16px;
 			padding: 0;
+		}
+
+		& > .content {
+			position: relative;
+			overflow: auto;
+			height: 100%;
+			width: 100%;
 		}
 
 		& > .border-wrap {
