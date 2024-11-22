@@ -4,10 +4,11 @@
 		:is="props.is"
 		class="nami-card"
 		:style="{
-			'--card-padding': props.padding + 'px'
+			'--card-padding': props.padding + 'px',
+			border: props.useBorder ? '1px solid ' + props.color : 'none'
 		}"
 	>
-		<svg ref="svg" class="nami-svg"></svg>
+		<svg ref="svg" class="nami-svg" v-if="!props.useBorder"></svg>
 		<slot></slot>
 	</component>
 </template>
@@ -25,6 +26,7 @@ interface Props {
 	height?: number | string;
 	padding?: number;
 	roughOptions?: Options;
+	useBorder?: boolean;
 }
 
 const defaultRoughOptions = {
@@ -37,7 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
 	is: "div",
 	color: "#000000",
 	height: "",
-	padding: 5
+	padding: 5,
+	useBorder: false
 });
 
 const card = ref<HTMLElement | null>(null);
@@ -69,13 +72,11 @@ function changeSvgFn() {
 
 		const p = props.padding;
 
-		const content = rough
-			.svg(svg.value)
-			.rectangle(p, p, ract.width - p * 2, ract.height - p * 2, {
-				...defaultRoughOptions,
-				...props.roughOptions,
-				stroke: props.roughOptions?.stroke ?? props.color
-			});
+		const content = rough.svg(svg.value).rectangle(p, p, ract.width - p * 2, ract.height - p * 2, {
+			...defaultRoughOptions,
+			...props.roughOptions,
+			stroke: props.roughOptions?.stroke ?? props.color
+		});
 
 		svg.value.replaceChildren(content);
 	}
