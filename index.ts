@@ -28,6 +28,8 @@ import MenuItem from "./components/menu/menuItem.vue";
 import FieldsetCard from "./components/card/fieldset.vue";
 import Panel from "./components/panel/panel.vue";
 
+import { useMessage } from "./components/message/useMessage";
+
 const withInstall = (app: App) => {
 	app.component("namiRoughLine", roughLine);
 	app.component("namiRoughCard", roughCard);
@@ -65,5 +67,6 @@ export {
 	Panel,
 	withInstall,
 	withInstall as default,
-	config
+	config,
+	useMessage
 };

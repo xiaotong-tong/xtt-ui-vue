@@ -1,6 +1,11 @@
 <template>
-	<section class="box">
-		<div class="title" ref="titleRef">
+	<section
+		class="box"
+		:class="{
+			'box--no-title': !title
+		}"
+	>
+		<div class="title" ref="titleRef" v-if="title">
 			<slot name="legend">{{ title }}</slot>
 		</div>
 		<div class="content">
@@ -54,7 +59,7 @@ onMounted(createTitleMaskOfTitle);
 		border: none;
 		position: relative;
 		overflow: hidden;
-		height: calc-size(auto, max(size, 3em));
+		height: calc-size(auto, max(size, 1em));
 		padding: 20px 8px 8px;
 
 		& > .title {
@@ -74,7 +79,7 @@ onMounted(createTitleMaskOfTitle);
 		& > .border-wrap {
 			position: absolute;
 			inset: 0;
-			height: calc-size(auto, max(size, 3em));
+			height: calc-size(auto, max(size, 1em));
 			pointer-events: none;
 			z-index: 9999;
 
@@ -104,6 +109,24 @@ onMounted(createTitleMaskOfTitle);
 				top: 10px;
 				right: 2px;
 				width: 9999px;
+			}
+		}
+
+		&.box--no-title {
+			padding-top: 8px;
+
+			& > .border-wrap {
+				& > .top {
+					top: 0;
+				}
+
+				& > .left {
+					top: 0;
+				}
+
+				& > .right {
+					top: 0;
+				}
 			}
 		}
 	}
