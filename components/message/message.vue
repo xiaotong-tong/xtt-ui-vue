@@ -1,21 +1,24 @@
 <template>
-	<fieldsetCard
-		class="message"
-		:class="{ dark: unref(isDark) }"
-		:borderColor="color"
-		v-if="!destroyed"
-		:style="{
-			'--color': unref(color)
-		}"
-	>
-		<slot></slot>
-	</fieldsetCard>
+	<transition name="fade" appear>
+		<LineCard
+			v-if="!destroyed"
+			class="message"
+			:class="{ dark: unref(isDark) }"
+			:color="color"
+			:isDark="isDark"
+			:style="{
+				'--color': unref(color)
+			}"
+		>
+			<slot></slot>
+		</LineCard>
+	</transition>
 </template>
 
 <script setup lang="ts">
 import type { MaybeRef } from "vue";
 import { unref, ref, onMounted } from "vue";
-import fieldsetCard from "../card/fieldset.vue";
+import LineCard from "../card/line.vue";
 import { defaultColor, isDark as defaultIsDark } from "../../utils/config";
 
 interface Props {
@@ -52,6 +55,17 @@ onMounted(() => {
 	.message.dark {
 		background-color: #333;
 		color: #cfd3dc;
+	}
+
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity 1s, transform 1s;
+	}
+
+	.fade-enter-from,
+	.fade-leave-to {
+		transform: translateY(-100px);
+		opacity: 0;
 	}
 }
 </style>
