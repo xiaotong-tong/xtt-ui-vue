@@ -6,9 +6,11 @@ import config from "./utils/config";
 import roughLine from "./components/line/rough/index.vue";
 import roughCard from "./components/card/rough/index.vue";
 import roughFullCard from "./components/card/rough/full.vue";
+import LineCard from "./components/card/line.vue";
 import roughIcon from "./components/icon/rough/index.vue";
 import webBG from "./components/web-bg/index.vue";
 import icon from "./components/icon/index.vue";
+import BaseIcon from "./components/icon/icon.vue";
 import listMasonry from "./components/list/masonry/masonry.vue";
 import listMasonryItem from "./components/list/masonry/masonryItem.vue";
 import hBanner from "./components/hBanner/hBanner.vue";
@@ -27,10 +29,12 @@ import Menu from "./components/menu/menu.vue";
 import MenuItem from "./components/menu/menuItem.vue";
 import FieldsetCard from "./components/card/fieldset.vue";
 import Panel from "./components/panel/panel.vue";
+import TextArea from "./components/textarea/textarea.vue";
 
 import { useMessage } from "./components/message/useMessage";
 
 const withInstall = (app: App) => {
+	app.component("namiIcon", BaseIcon);
 	app.component("namiRoughLine", roughLine);
 	app.component("namiRoughCard", roughCard);
 	app.component("namiRoughIcon", roughIcon);
@@ -44,8 +48,10 @@ export {
 	roughLine,
 	roughCard,
 	roughFullCard,
+	LineCard,
 	roughIcon,
 	icon as Icon,
+	BaseIcon,
 	webBG,
 	listMasonry,
 	listMasonryItem,
@@ -65,6 +71,7 @@ export {
 	MenuItem,
 	FieldsetCard,
 	Panel,
+	TextArea,
 	withInstall,
 	withInstall as default,
 	config,

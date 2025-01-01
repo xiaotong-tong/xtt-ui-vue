@@ -7,6 +7,7 @@ interface Props {
 	color?: MaybeRef<string>;
 	duration?: number;
 	isDark?: MaybeRef<boolean>;
+	type?: "error";
 }
 
 let containerElement: HTMLElement | null = null;
@@ -63,6 +64,12 @@ function renderMessage(message: string, props?: Props): VNode {
 
 export const useMessage = () => {
 	const $message = (message: string, props?: Props) => {
+		renderMessage(message, props);
+	};
+
+	$message.error = (message: string, props?: Props) => {
+		props = props || {};
+		props.type = "error";
 		renderMessage(message, props);
 	};
 

@@ -10,6 +10,9 @@
 				'--color': unref(color)
 			}"
 		>
+			<slot name="icon">
+				<Icon v-if="type === 'error'" icon="mdiCloseCircle" class="icon"></Icon>
+			</slot>
 			<slot></slot>
 		</LineCard>
 	</transition>
@@ -20,14 +23,16 @@ import type { MaybeRef } from "vue";
 import { unref, ref, onMounted } from "vue";
 import LineCard from "../card/line.vue";
 import { defaultColor, isDark as defaultIsDark } from "../../utils/config";
+import Icon from "../icon/icon.vue";
 
 interface Props {
 	color?: MaybeRef<string>;
 	duration?: number;
 	isDark?: MaybeRef<boolean>;
+	type?: "error";
 }
 
-const { color = defaultColor, duration = 5000, isDark = defaultIsDark } = defineProps<Props>();
+const { color = defaultColor, duration = 5000, isDark = defaultIsDark, type } = defineProps<Props>();
 
 const destroyed = ref(false);
 
@@ -50,6 +55,16 @@ onMounted(() => {
 		background-color: #fff;
 		box-shadow: 0 1px 2px 3px rgb(from var(--color) r g b / 0.2), 0 2px 4px 2px rgb(from var(--color) r g b / 0.14),
 			0 1px 5px 1px rgb(from var(--color) r g b / 0.12);
+
+		display: flex;
+		align-items: start;
+		column-gap: 8px;
+
+		.icon {
+			flex: none;
+			font-size: 24px;
+			color: #f00;
+		}
 	}
 
 	.message.dark {
