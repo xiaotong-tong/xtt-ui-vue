@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import type { MaybeRef } from "vue";
-import { unref, ref } from "vue";
+import { unref, ref, onUnmounted, watch } from "vue";
 import { defaultColor, isDark as defaultIsDark } from "../../utils/config";
 import { useResizeObserver } from "@vueuse/core";
 
@@ -49,9 +49,25 @@ const width = defineModel("width", { type: Number });
 const height = defineModel("height", { type: Number });
 
 const cardRef = ref<HTMLElement>();
-useResizeObserver(cardRef, () => {
-	width.value = cardRef.value?.offsetWidth ?? 0;
-	height.value = cardRef.value?.offsetHeight ?? 0;
+
+let stopResizeObserver = Function.prototype;
+watch(
+	() => unref(resizeable),
+	() => {
+		if (unref(resizeable)) {
+			const { stop } = useResizeObserver(cardRef, () => {
+				width.value = cardRef.value?.offsetWidth ?? 0;
+				height.value = cardRef.value?.offsetHeight ?? 0;
+			});
+			stopResizeObserver = stop;
+		} else {
+			stopResizeObserver();
+		}
+	}
+);
+
+onUnmounted(() => {
+	stopResizeObserver();
 });
 </script>
 
@@ -63,6 +79,8 @@ useResizeObserver(cardRef, () => {
 		overflow: hidden;
 		padding: 8px;
 		background-color: var(--bg-color);
+		box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%),
+			0 0 10px 0 #00000033;
 
 		.content {
 			width: 100%;

@@ -11,7 +11,8 @@
 			}"
 		>
 			<slot name="icon">
-				<Icon v-if="type === 'error'" icon="mdiCloseCircle" class="icon"></Icon>
+				<Icon v-if="type === 'error'" icon="mdiCloseCircle" class="icon error"></Icon>
+				<Icon v-else-if="type === 'success'" icon="mdiCheckCircleOutline" class="success"></Icon>
 			</slot>
 			<slot></slot>
 		</LineCard>
@@ -29,7 +30,7 @@ interface Props {
 	color?: MaybeRef<string>;
 	duration?: number;
 	isDark?: MaybeRef<boolean>;
-	type?: "error";
+	type?: "error" | "success";
 }
 
 const { color = defaultColor, duration = 5000, isDark = defaultIsDark, type } = defineProps<Props>();
@@ -63,7 +64,13 @@ onMounted(() => {
 		.icon {
 			flex: none;
 			font-size: 24px;
-			color: #f00;
+
+			&.error {
+				color: #d03050;
+			}
+			&.success {
+				color: #18a058;
+			}
 		}
 	}
 

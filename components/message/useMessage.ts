@@ -7,7 +7,7 @@ interface Props {
 	color?: MaybeRef<string>;
 	duration?: number;
 	isDark?: MaybeRef<boolean>;
-	type?: "error";
+	type?: "error" | "success";
 }
 
 let containerElement: HTMLElement | null = null;
@@ -70,6 +70,12 @@ export const useMessage = () => {
 	$message.error = (message: string, props?: Props) => {
 		props = props || {};
 		props.type = "error";
+		renderMessage(message, props);
+	};
+
+	$message.success = (message: string, props?: Props) => {
+		props = props || {};
+		props.type = "success";
 		renderMessage(message, props);
 	};
 

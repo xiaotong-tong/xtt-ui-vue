@@ -38,7 +38,8 @@ import {
 	mdiClockOutline,
 	mdiUpdate,
 	mdiCloseCircle,
-	mdiCursorMove
+	mdiCursorMove,
+	mdiCheckCircleOutline
 } from "@mdi/js";
 
 interface Props {
@@ -73,7 +74,8 @@ interface Props {
 		| "mdiClockOutline"
 		| "mdiUpdate"
 		| "mdiCloseCircle"
-		| "mdiCursorMove";
+		| "mdiCursorMove"
+		| "mdiCheckCircleOutline";
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -112,7 +114,8 @@ const reflectIcon = (icon: Props["icon"]) => {
 		mdiClockOutline,
 		mdiUpdate,
 		mdiCloseCircle,
-		mdiCursorMove
+		mdiCursorMove,
+		mdiCheckCircleOutline
 	};
 
 	return mdiMap[icon];
