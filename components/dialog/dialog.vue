@@ -44,6 +44,7 @@ import NamiButton from "../button/button.vue";
 import rough from "roughjs";
 import { css } from "xtt-utils";
 import { defaultColor } from "../../utils/config";
+import { curI18n } from "../../locales/locales";
 
 interface Props {
 	customStyleOfCloseBtn?: StyleValue;
@@ -64,8 +65,8 @@ const props = withDefaults(defineProps<Props>(), {
 	height: 500,
 	closeBtn: true,
 	footer: true,
-	okText: "确定",
-	cancelText: "取消",
+	okText: () => unref(curI18n).dialog.okText,
+	cancelText: () => unref(curI18n).dialog.cancelText,
 	asyncOkCallback: false,
 	transparent: false
 });
