@@ -30,6 +30,7 @@ import MenuItem from "./components/menu/menuItem.vue";
 import FieldsetCard from "./components/card/fieldset.vue";
 import Panel from "./components/panel/panel.vue";
 import TextArea from "./components/textarea/textarea.vue";
+import Alert from "./components/alert/alert.vue";
 
 import { useMessage } from "./components/message/useMessage";
 
@@ -72,6 +73,7 @@ export {
 	FieldsetCard,
 	Panel,
 	TextArea,
+	Alert,
 	withInstall,
 	withInstall as default,
 	config,
