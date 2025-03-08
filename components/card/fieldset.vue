@@ -15,7 +15,7 @@
 			<Line class="top" :color="borderColor" :height="2"></Line>
 			<Line class="bottom" :color="borderColor" :height="2"></Line>
 			<Line class="left" :color="borderColor" :height="2" dir="y"></Line>
-			<Line class="right" :color="borderColor" :height="2" dir="y" rotationWise="counter-clockwise"></Line>
+			<Line class="right" :color="borderColor" :height="2" dir="y"></Line>
 		</div>
 	</section>
 </template>
@@ -86,29 +86,21 @@ onMounted(createTitleMaskOfTitle);
 			& > .top {
 				position: absolute;
 				top: 10px;
-				left: 0;
-				right: 0;
 			}
 
 			& > .bottom {
 				position: absolute;
 				bottom: 0;
-				left: 0;
-				right: 0;
 			}
 
 			& > .left {
 				position: absolute;
-				top: 10px;
-				left: 2px;
-				width: 9999px;
+				left: 0;
 			}
 
 			& > .right {
 				position: absolute;
-				top: 10px;
-				right: 2px;
-				width: 9999px;
+				right: 0;
 			}
 		}
 
@@ -117,14 +109,6 @@ onMounted(createTitleMaskOfTitle);
 
 			& > .border-wrap {
 				& > .top {
-					top: 0;
-				}
-
-				& > .left {
-					top: 0;
-				}
-
-				& > .right {
 					top: 0;
 				}
 			}

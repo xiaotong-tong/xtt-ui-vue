@@ -3,12 +3,9 @@
 		ref="line"
 		:is="props.is"
 		class="nami-line"
-		:class="{
-			'rotation-clockwise': props.rotationWise === 'clockwise',
-			'rotation-counter-clockwise': props.rotationWise === 'counter-clockwise'
-		}"
 		:style="{
-			blockSize: typeof props.height === 'number' ? `${props.height}px` : props.height
+			blockSize: heightValue,
+			inlineSize: widthValue
 		}"
 	>
 		<svg ref="svg" class="nami-svg" v-html="path"></svg>
@@ -18,7 +15,7 @@
 <script setup lang="ts">
 import type { MaybeRef } from "vue";
 import type { Options } from "roughjs/bundled/core.d.ts";
-import { ref, onMounted, watch, unref } from "vue";
+import { ref, onMounted, watch, unref, computed } from "vue";
 import rough from "roughjs";
 import { useResizeObserver } from "@vueuse/core";
 import { random } from "xtt-utils";
@@ -27,26 +24,35 @@ import { defaultColor } from "../../../utils/config";
 interface Props {
 	is?: string;
 	height?: number | string;
+	width?: number | string;
 	color?: MaybeRef<string>;
 	dir?: "x" | "y";
-	rotationWise?: "clockwise" | "counter-clockwise";
 	roughOptions?: Options;
 }
 
 const defaultFillWeight = random(2, 4);
 
+const props = withDefaults(defineProps<Props>(), {
+	is: "div",
+	height: 3,
+	width: "100%",
+	dir: "x" // x: 横向，y: 纵向
+});
+
 const defaultRoughOptions = {
 	fillWeight: defaultFillWeight,
 	hachureGap: defaultFillWeight * 1.5,
 	stroke: "none",
-	hachureAngle: random(125, 245)
+	hachureAngle: props.dir === "x" ? random(125, 245) : random(30, 145)
 };
 
-const props = withDefaults(defineProps<Props>(), {
-	is: "div",
-	height: 3,
-	dir: "x", // x: 横向，y: 纵向
-	rotationWise: "clockwise" // 为 y 时有效，旋转方向
+const widthValue = computed(() => {
+	const width = props.dir === "y" ? props.height : props.width;
+	return typeof width === "number" ? `${width}px` : width;
+});
+const heightValue = computed(() => {
+	const height = props.dir === "y" ? props.width : props.height;
+	return typeof height === "number" ? `${height}px` : height;
 });
 
 const line = ref<HTMLElement | null>(null);
@@ -56,7 +62,6 @@ const path = ref<string>("");
 
 const changeSvgFn = () => {
 	if (line.value && svg.value) {
-		line.value.classList.remove("nami-line-dir-x", "nami-line-dir-y");
 		const ract = line.value.getBoundingClientRect();
 
 		svg.value.setAttribute("viewBox", `0 0 ${ract.width} ${ract.height}`);
@@ -66,8 +71,6 @@ const changeSvgFn = () => {
 			...props.roughOptions,
 			fill: props.roughOptions?.fill ?? unref(props.color) ?? unref(defaultColor)
 		}).outerHTML;
-
-		line.value.classList.add(`nami-line-dir-${props.dir}`);
 	}
 };
 
@@ -101,21 +104,10 @@ watch(
 	.nami-line {
 		position: relative;
 		display: block;
-		width: 100%;
 	}
 	.nami-svg {
 		position: absolute;
 		inset: 0;
-	}
-
-	.nami-line-dir-y {
-		transform-origin: top left;
-		transform: rotate(90deg);
-
-		&.rotation-counter-clockwise {
-			transform-origin: top right;
-			transform: rotate(-90deg);
-		}
 	}
 }
 </style>
