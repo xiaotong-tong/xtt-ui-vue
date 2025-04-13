@@ -11,7 +11,14 @@
 		<div class="content">
 			<slot><span class="empty" style="height: 1em">&nbsp;</span></slot>
 		</div>
-		<div class="border-wrap" aria-hidden="true" ref="borderRef">
+		<div
+			class="border-wrap"
+			:style="{
+				zIndex: borderZIndex
+			}"
+			aria-hidden="true"
+			ref="borderRef"
+		>
 			<Line class="top" :color="borderColor" :height="2"></Line>
 			<Line class="bottom" :color="borderColor" :height="2"></Line>
 			<Line class="left" :color="borderColor" :height="2" dir="y"></Line>
@@ -30,9 +37,10 @@ import { defaultColor } from "../../utils/config";
 interface Props {
 	title?: MaybeRef<string>;
 	borderColor?: MaybeRef<string>;
+	borderZIndex?: number;
 }
 
-const { title, borderColor = defaultColor } = defineProps<Props>();
+const { title, borderColor = defaultColor, borderZIndex = 2 } = defineProps<Props>();
 
 const titleRef = ref<HTMLElement>();
 const borderRef = ref<HTMLElement>();
@@ -81,7 +89,6 @@ onMounted(createTitleMaskOfTitle);
 			inset: 0;
 			height: calc-size(auto, max(size, 1em));
 			pointer-events: none;
-			z-index: 9999;
 
 			& > .top {
 				position: absolute;

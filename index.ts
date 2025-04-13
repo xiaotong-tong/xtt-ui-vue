@@ -31,6 +31,7 @@ import FieldsetCard from "./components/card/fieldset.vue";
 import Panel from "./components/panel/panel.vue";
 import TextArea from "./components/textarea/textarea.vue";
 import Alert from "./components/alert/alert.vue";
+import Sound from "./components/sound/sound.vue";
 
 import { useMessage } from "./components/message/useMessage";
 
@@ -74,6 +75,7 @@ export {
 	Panel,
 	TextArea,
 	Alert,
+	Sound,
 	withInstall,
 	withInstall as default,
 	config,
