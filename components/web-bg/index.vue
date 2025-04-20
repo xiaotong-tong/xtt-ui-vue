@@ -22,7 +22,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-	src: "https://image.xtt.moe/images/bg.webp",
+	src: "https://image.xtt.cool/images/bg.webp",
 	mask: false,
 	dark: false
 });

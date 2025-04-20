@@ -21,8 +21,8 @@ onMounted(async () => {
 	});
 
 	const model = await Live2DModel.from(
-		// "https://file.xtt.moe/local/%E6%B4%97%E7%BF%A0%E7%B4%A2%E7%BD%97%E4%BA%9A/%E6%B4%97%E7%BF%A0%E7%B4%A2%E7%BD%97%E4%BA%9A.model3.json"
-		"https://file.xtt.moe/local/nami/nami.model3.json"
+		// "https://file.xtt.cool/local/%E6%B4%97%E7%BF%A0%E7%B4%A2%E7%BD%97%E4%BA%9A/%E6%B4%97%E7%BF%A0%E7%B4%A2%E7%BD%97%E4%BA%9A.model3.json"
+		"https://file.xtt.cool/local/nami/nami.model3.json"
 	);
 
 	model.scale.set(0.05);
