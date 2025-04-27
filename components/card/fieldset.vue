@@ -85,6 +85,8 @@ onMounted(createTitleMaskOfTitle);
 		}
 
 		& > .border-wrap {
+			--offset-top: 10px;
+
 			position: absolute;
 			inset: 0;
 			height: calc-size(auto, max(size, 1em));
@@ -92,7 +94,7 @@ onMounted(createTitleMaskOfTitle);
 
 			& > .top {
 				position: absolute;
-				top: 10px;
+				top: var(--offset-top);
 			}
 
 			& > .bottom {
@@ -103,11 +105,13 @@ onMounted(createTitleMaskOfTitle);
 			& > .left {
 				position: absolute;
 				left: 0;
+				top: var(--offset-top);
 			}
 
 			& > .right {
 				position: absolute;
 				right: 0;
+				top: var(--offset-top);
 			}
 		}
 
@@ -115,9 +119,7 @@ onMounted(createTitleMaskOfTitle);
 			padding-top: 8px;
 
 			& > .border-wrap {
-				& > .top {
-					top: 0;
-				}
+				--offset-top: 0px;
 			}
 		}
 	}

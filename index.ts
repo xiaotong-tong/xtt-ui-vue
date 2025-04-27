@@ -32,6 +32,7 @@ import Panel from "./components/panel/panel.vue";
 import TextArea from "./components/textarea/textarea.vue";
 import Alert from "./components/alert/alert.vue";
 import Sound from "./components/sound/sound.vue";
+import FriendCard from "./components/card/friend.vue";
 
 import { useMessage } from "./components/message/useMessage";
 
@@ -76,6 +77,7 @@ export {
 	TextArea,
 	Alert,
 	Sound,
+	FriendCard,
 	withInstall,
 	withInstall as default,
 	config,
